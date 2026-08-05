@@ -430,7 +430,7 @@
             <div class="user-actions">
                 <a href="/login" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
                 <a href="#" title="Favoritos"><i class="fa-regular fa-heart"></i></a>
-                <a href="/carrito" title="Carrito"><i class="fa-solid fa-bag-shopping"></i></a>
+                <a href="{{ url('/carrito') }}" title="Carrito"> <i class="fa-solid fa-bag-shopping"></i> </a>
             </div>
         </div>
     </header>
