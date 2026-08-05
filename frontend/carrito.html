@@ -1,0 +1,41 @@
+<!--Muestra la lista de productos guardados en localStorage-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Tienda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <svg height="32" viewBox="0 0 50 32" fill="black">
+                <rect x="0" y="18" width="8" height="14" transform="skewX(-25)"></rect>
+                <rect x="14" y="9" width="8" height="23" transform="skewX(-25)"></rect>
+                <rect x="28" y="0" width="8" height="32" transform="skewX(-25)"></rect>
+            </svg>
+        </a>
+        <a href="index.html" style="font-weight: 700; font-size: 13px;">← VOLVER A LA TIENDA</a>
+    </header>
+
+    <main class="products-section">
+        <h2 class="section-title">Tu Carrito de Compras</h2>
+        
+        <div id="carrito-contenedor">
+            <p>Tu carrito está vacío actualmente.</p>
+        </div>
+
+        <div style="margin-top: 30px; text-align: right;" id="carrito-resumen">
+            <h3>Total: <span id="carrito-total">$ 0</span></h3>
+            <br>
+            <button class="btn-adidas" onclick="checkout()">FINALIZAR COMPRA</button>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

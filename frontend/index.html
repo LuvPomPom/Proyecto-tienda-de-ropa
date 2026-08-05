@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa - Oficial</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <div class="top-banner">
+        ¡BIENVENIDOS A LA TIENDA OFICIAL!
+    </div>
+
+    <div class="sub-header">
+        <a href="#">ayuda</a>
+        <a href="#">envíos y devoluciones</a>
+        <span><img src="https://flagcdn.com/w20/uy.png" class="flag-icon" alt="Uruguay"></span>
+    </div>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <svg height="32" viewBox="0 0 50 32" fill="black">
+                <rect x="0" y="18" width="8" height="14" transform="skewX(-25)"></rect>
+                <rect x="14" y="9" width="8" height="23" transform="skewX(-25)"></rect>
+                <rect x="28" y="0" width="8" height="32" transform="skewX(-25)"></rect>
+            </svg>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="#">MUJER</a></li>
+            <li><a href="#">HOMBRE</a></li>
+            <li><a href="#">NIÑOS</a></li>
+            <li><a href="#">DEPORTES</a></li>
+            <li><a href="#">NOVEDADES</a></li>
+            <li><a href="#" class="sale">SALE</a></li>
+        </ul>
+
+        <div class="nav-actions">
+            <form action="#" method="GET" class="search-box">
+                <input type="text" name="query" placeholder="Buscar" autocomplete="off">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+            <div class="user-actions">
+                <a href="login.html" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
+                <a href="#" title="Favoritos"><i class="fa-regular fa-heart"></i></a>
+                <a href="carrito.html" title="Carrito"><i class="fa-solid fa-bag-shopping"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-left">
+                <h2>SALE</h2>
+                <p>LLEVATE HASTA UN 50% OFF EN EL CATÁLOGO SELECCIONADO.</p>
+                <a href="#catalogo" class="btn-adidas">
+                    COMPRAR AHORA <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="hero-right">
+                <div class="big-text">HASTA</div>
+                <div class="percentage">50%</div>
+                <div class="off-text">OFF</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section" id="catalogo">
+        <h3 class="section-title">Novedades y Destacados</h3>
+
+        <div class="products-grid" id="products-grid">
+            
+            <div class="product-card">
+                <span class="product-badge">Novedad</span>
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" alt="Calzado Deportivo">
+                </div>
+                <div class="product-info">
+                    <p class="category">Calzado Hombre</p>
+                    <h4>Zapatillas Running Pro</h4>
+                    <div class="price-container">
+                        <span class="price">$ 4.590</span>
+                        <span class="old-price">$ 5.990</span>
+                    </div>
+                    <a href="#" class="btn-buy">Ver Detalle</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <span class="product-badge" style="background: #d3122a;">-30% OFF</span>
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500" alt="Camiseta">
+                </div>
+                <div class="product-info">
+                    <p class="category">Ropa Hombre</p>
+                    <h4>Camiseta Sport Classic</h4>
+                    <div class="price-container">
+                        <span class="price">$ 1.890</span>
+                    </div>
+                    <a href="#" class="btn-buy">Ver Detalle</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500" alt="Canguro / Hoodie">
+                </div>
+                <div class="product-info">
+                    <p class="category">Ropa Mujer</p>
+                    <h4>Hoodie Oversize Black</h4>
+                    <div class="price-container">
+                        <span class="price">$ 3.290</span>
+                    </div>
+                    <a href="#" class="btn-buy">Ver Detalle</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <span class="product-badge">Popular</span>
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=500" alt="Mochila">
+                </div>
+                <div class="product-info">
+                    <p class="category">Accesorios</p>
+                    <h4>Mochila Urban Backpack</h4>
+                    <div class="price-container">
+                        <span class="price">$ 2.190</span>
+                    </div>
+                    <a href="#" class="btn-buy">Ver Detalle</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <a href="https://wa.me/59800000000" class="whatsapp-btn" target="_blank" title="Contactar por WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+</body>
+</html>
