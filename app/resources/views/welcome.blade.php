@@ -1,4 +1,4 @@
-<!DOCTYPE html>                ¿Para qué sirve? > Es la portada principal de la tienda (/). Aquí mostramos el Banner gigante promocional (Hero Banner) con la oferta "50% OFF" y una pequeña selección de productos destacados para llamar la atención del cliente apenas entra al sitio.
+<!DOCTYPE html>               <!-- ¿Para qué sirve? > Es la portada principal de la tienda (/). Aquí mostramos el Banner gigante promocional (Hero Banner) con la oferta "50% OFF" y una pequeña selección de productos destacados para llamar la atención del cliente apenas entra al sitio. -->
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
