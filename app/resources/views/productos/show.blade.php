@@ -1,0 +1,2 @@
+//¿Para qué sirve? > Es la pantalla individual de una prenda en específico (/producto/1). Muestra la foto grande, 
+selector de talle (S, M, L, XL), guía de medidas, descripción detallada del material y el botón gigante de "Añadir al Carrito".

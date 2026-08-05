@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: laravel_app
+
+    working_dir: /var/www/html
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./app:/var/www/html
+
+    env_file:
+      - ./app/.env
+
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+    restart: unless-stopped
