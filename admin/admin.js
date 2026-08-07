@@ -1,3 +1,22 @@
+// Proteger vista: Si no hay token guardado, redirige al Login
+if (!localStorage.getItem('admin_token')) {
+    window.location.href = 'login.html';
+}
+
+// Lógica para cerrar sesión
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.querySelector('.logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('¿Cerrar sesión?')) {
+                localStorage.removeItem('admin_token');
+                window.location.href = 'login.html';
+            }
+        });
+    }
+});
+
 // Configuración base de la URL de tu Backend en Laravel
 const API_URL = '127.0.0.1:5500/admin/admin.html#';
 
