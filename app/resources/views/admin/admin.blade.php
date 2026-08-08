@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Tienda</title>
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="{{ asset('admin/admin.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
         <aside class="sidebar">
             <h2>Admin Panel</h2>
             <nav>
-                <a href="#" class="active"><i class="fa-solid fa-box"></i> Productos</a>
+                <a href="/admin" class="active"><i class="fa-solid fa-box"></i> Productos</a>
                 <a href="#"><i class="fa-solid fa-list-check"></i> Categorías</a>
                 <a href="#"><i class="fa-solid fa-cart-shopping"></i> Pedidos</a>
                 <a href="#" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
@@ -95,6 +95,6 @@
         </main>
     </div>
 
-    <script src="admin.js"></script>
+    <script src="{{ asset('admin/admin.js') }}?v={{ time() }}"></script>
 </body>
 </html>

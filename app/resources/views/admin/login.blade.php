@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Administración</title>
-    <link rel="stylesheet" href="admin.css">
+    
+    <link rel="stylesheet" href="{{ asset('admin/admin.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Estilos específicos para la pantalla de Login */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #0f172a; /* Fondo oscuro del admin */
+            background-color: #0f172a;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
         }
@@ -145,15 +145,13 @@
             const password = document.getElementById('password').value.trim();
             const errorMsg = document.getElementById('error-msg');
 
-            // Credenciales de prueba (Luego se validarán contra la API de Laravel)
+            // Validación simulada
             if (email === 'admin@tienda.com' && password === '123456') {
-                // Guardamos el token en el almacenamiento local del navegador
                 localStorage.setItem('admin_token', 'token_seguro_simulado_123');
                 
-                // Redirigimos al panel de control
-                window.location.href = 'admin.html';
+                // Redirección a la ruta de Laravel
+                window.location.href = '/admin';
             } else {
-                // Mostramos mensaje de error si las credenciales fallan
                 errorMsg.style.display = 'block';
             }
         });
