@@ -122,6 +122,9 @@ body {
     border-radius: 12px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    width: fit-content;
+    margin-inline: auto;
 }
 
 .card h2 {
@@ -139,6 +142,7 @@ body {
     flex-direction: column;
     gap: 0.4rem;
     margin-bottom: 1.2rem;
+    box-sizing: border-box;
 }
 
 .input-row {

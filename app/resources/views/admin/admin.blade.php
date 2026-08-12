@@ -16,7 +16,7 @@
                 <a href="/admin" class="active"><i class="fa-solid fa-box"></i> Productos</a>
                 <a href="#"><i class="fa-solid fa-list-check"></i> Categorías</a>
                 <a href="#"><i class="fa-solid fa-cart-shopping"></i> Pedidos</a>
-                <a href="#" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
+                <a href="/" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
             </nav>
         </aside>
 
@@ -47,14 +47,31 @@
                             </div>
                         </div>
 
-                        <div class="input-group">
-                            <label for="categoria">Categoría</label>
-                            <select id="categoria">
-                                <option value="calzado">Calzado</option>
-                                <option value="ropa">Ropa</option>
-                                <option value="accesorios">Accesorios</option>
-                            </select>
-                        </div>
+                        <div class="input-row">
+
+    <div class="input-group">
+        <label for="marca_id">Marca</label>
+
+        <select id="marca_id" required>
+            <option value="">Seleccionar marca</option>
+            <option value="1">Nike</option>
+            <option value="2">Adidas</option>
+            <option value="3">Rebook</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="categoria_id">Categoría</label>
+
+        <select id="categoria_id" required>
+            <option value="">Seleccionar categoría</option>
+            <option value="1">Calzado</option>
+            <option value="2">Ropa</option>
+            <option value="3">Accesorios</option>
+        </select>
+    </div>
+
+</div>
 
                         <div class="input-group">
                             <label for="imagen">Imagen del Producto</label>
