@@ -2,13 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Ruta del Inicio (Tienda pública)
+// Ruta principal (Home / Index)
 Route::get('/', function () {
-    return view('welcome');
+    return view('index'); // Apunta a resources/views/index.blade.php
 });
 
+// Catálogo de Productos
+Route::get('/productos', function () {
+    return view('productos'); // Apunta a resources/views/productos.blade.php
+});
 
-//RUTA PARA EL PANEL DE ADMIN:
+// Carrito de compras
+Route::get('/carrito', function () {
+    return view('carrito'); // Apunta a resources/views/carrito.blade.php
+});
+
+// Dashboard Admin
 Route::get('/admin', function () {
-    return view('admin.admin'); // Carga resources/views/admin/admin.blade.php
+    return view('admin.admin'); // Apunta a resources/views/admin/admin.blade.php
 });
