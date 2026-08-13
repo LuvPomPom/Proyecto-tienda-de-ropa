@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración</title>
 
-    @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+@vite([
+    'resources/css/admin.css',
+    'resources/js/admin.js'
+])
 </head>
 <body>
 
@@ -112,6 +115,5 @@
         </main>
     </div>
 
-    <script src="{{ asset('js/admin.js') }}?v={{ time() }}"></script>
 </body>
 </html>

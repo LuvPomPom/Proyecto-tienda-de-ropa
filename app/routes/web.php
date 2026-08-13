@@ -21,3 +21,7 @@ Route::get('/carrito', function () {
 Route::get('/admin', function () {
     return view('admin.admin'); // Apunta a resources/views/admin/admin.blade.php
 });
+
+Route::get('/login', function () {
+    return view('admin.login'); // Quería ver si funcionaba o algo KDJSKDJSK
+});
