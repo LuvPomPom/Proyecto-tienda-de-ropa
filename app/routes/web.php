@@ -1,6 +1,14 @@
 <?php
 
+use App\Http\Controllers\TestController;   //esta linea es tambien para el formularioLeandro
 use Illuminate\Support\Facades\Route;
+
+
+// Ruta POST para recibir el formulario que dijo Leandro
+Route::post('/guardar-dato', [TestController::class, 'guardar']);
+
+
+
 
 // Ruta principal (Home / Index)
 Route::get('/', function () {

@@ -95,14 +95,41 @@
         <h3 class="section-title">Novedades y Destacados</h3>
 
         <div class="products-grid" id="products-container">
-            </div>
+        </div>
     </section>
+
+    <!-- ======================================================== -->
+    <!-- SECCIÓN DE PRUEBA LEANDRO: FORMULARIO POST A SUPABASE    -->
+    <!-- ======================================================== -->
+    <section style="max-width: 600px; margin: 40px auto; padding: 25px; border: 2px dashed #000; background: #fafafa; text-align: center;">
+        <h3 style="margin-bottom: 15px; font-weight: 800; font-size: 1.2rem; text-transform: uppercase;">
+            🧪 Prueba Backend $\rightarrow$ Supabase
+        </h3>
+
+        @if(session('mensaje'))
+            <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold;">
+                {{ session('mensaje') }}
+            </div>
+        @endif
+
+        <form action="/guardar-dato" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+            @csrf
+            
+            <label for="nombre" style="font-weight: 600; text-align: left;">Ingrese un nombre/producto de prueba:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ej: Remera de prueba" required style="padding: 10px; border: 1px solid #ccc; font-size: 14px;">
+
+            <button type="submit" class="btn-adidas" style="cursor: pointer; padding: 12px; background: #000; color: #fff; font-weight: bold; border: none; text-transform: uppercase;">
+                Guardar en Supabase
+            </button>
+        </form>
+    </section>
+    <!-- ======================================================== -->
 
     <div class="modal" id="product-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-product-modal">&times;</span>
             <div id="modal-detail-body">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -112,7 +139,7 @@
             <span class="close-cart-btn" id="close-cart">&times;</span>
         </div>
         <div class="cart-items" id="cart-items-container">
-            </div>
+        </div>
         <div class="cart-footer">
             <div class="total-row">
                 <span>TOTAL:</span>
@@ -155,6 +182,5 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <script src="js/main.js"></script>
 </body>
 </html>

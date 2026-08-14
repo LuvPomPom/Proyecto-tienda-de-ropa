@@ -15,11 +15,12 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-
     server: {
-        host: 'localhost',
+        host: '0.0.0.0',
         port: 5173,
-
+        hmr: {
+            host: 'localhost',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
