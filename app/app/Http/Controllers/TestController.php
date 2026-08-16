@@ -16,7 +16,7 @@ class TestController extends Controller
 
         // 2. Insertar directamente en la tabla de tu DB en Supabase
         // (Asegúrate de cambiar 'productos' por el nombre real de tu tabla)
-        DB::table('productos')->insert([
+        DB::table('producto')->insert([
             'nombre' => $request->input('nombre'),
             'created_at' => now(),
             'updated_at' => now(),
