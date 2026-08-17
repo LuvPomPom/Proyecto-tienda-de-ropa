@@ -68,9 +68,12 @@
 
         <select id="categoria_id" required>
             <option value="">Seleccionar categoría</option>
-            <option value="1">Calzado</option>
-            <option value="2">Ropa</option>
-            <option value="3">Accesorios</option>
+            <option value="1">Hombre</option>
+            <option value="2">Mujer</option>
+            <option value="3">Unisex</option>
+            <option value="4">Calzado</option>
+            <option value="5">Ropa</option>
+            <option value="6">Accesorios</option>
         </select>
     </div>
 

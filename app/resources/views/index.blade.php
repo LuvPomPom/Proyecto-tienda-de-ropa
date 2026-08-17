@@ -21,11 +21,18 @@
 
     <header class="navbar">
         <a href="index.html" class="logo">
-            <svg height="32" viewBox="0 0 50 32" fill="black">
-                <rect x="0" y="18" width="8" height="14" transform="skewX(-25)"></rect>
-                <rect x="14" y="9" width="8" height="23" transform="skewX(-25)"></rect>
-                <rect x="28" y="0" width="8" height="32" transform="skewX(-25)"></rect>
-            </svg>
+            <svg width="220" height="70" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Isotipo Minimalista (Entrelazado V y A estilizado) -->
+  <path d="M25 20L35 45H29L25 34L21 45H15L25 20Z" fill="#111111"/>
+  <path d="M25 26L22.5 33H27.5L25 26Z" fill="#FFFFFF"/>
+  <path d="M38 20H43V45H38V20Z" fill="#777777"/>
+  
+  <!-- Tipografía del Logo -->
+  <text x="65" y="42" font-family="Montserrat, Helvetica, sans-serif" font-size="28" font-weight="300" letter-spacing="8" fill="#111111">VOGA</text>
+  
+  <!-- Sutil línea inferior o bajada -->
+  <text x="67" y="52" font-family="Montserrat, Helvetica, sans-serif" font-size="8" font-weight="500" letter-spacing="4" fill="#777777">STORE</text>
+</svg>
         </a>
 
         <ul class="nav-links">

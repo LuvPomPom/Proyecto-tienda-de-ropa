@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('nombre', document.getElementById('nombre').value.trim());
             formData.append('precio', document.getElementById('precio').value);
             formData.append('marca_id', document.getElementById('marca_id').value);
+            formData.append('categoria_id', document.getElementById('categoria_id').value);
 
             const fileInput = document.getElementById('imagen');
             if (fileInput && fileInput.files[0]) {

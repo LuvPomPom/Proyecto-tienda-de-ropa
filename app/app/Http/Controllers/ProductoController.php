@@ -25,7 +25,8 @@ class ProductoController extends Controller
             'nombre'   => 'required|string|max:255',
             'precio'   => 'required|numeric|min:0',
             'marca_id' => 'required|integer',
-            'imagen'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048' // Acepta fotos
+            'imagen'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Acepta fotos
+            'categoria_id' => 'required|integer'
         ]);
 
         $rutaImagen = null;
@@ -42,7 +43,8 @@ class ProductoController extends Controller
             'nombre'   => $validated['nombre'],
             'precio'   => $validated['precio'],
             'marca_id' => $validated['marca_id'],
-            'imagen'   => $rutaImagen
+            'imagen'   => $rutaImagen,
+            'categoria_id' => $validated['categoria_id']
         ]);
 
         return response()->json([
