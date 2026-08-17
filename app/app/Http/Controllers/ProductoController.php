@@ -29,23 +29,27 @@ class ProductoController extends Controller
             'categoria_id' => 'required|integer'
         ]);
 
-        $rutaImagen = null;
+$producto = Producto::create([
+            'nombre'   => $validated['nombre'],
+            'precio'   => $validated['precio'],
+            'marca_id' => $validated['marca_id'],
+            'imagen'   => null,
+            'categoria_id' => $validated['categoria_id']
+        ]);
 
         // Si enviaron una foto, la guarda en la carpeta public/imgs
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
-            $nombreArchivo = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move(public_path('imgs'), $nombreArchivo);
-            $rutaImagen = 'imgs/' . $nombreArchivo;
+            $extension = $file->getClientOriginalExtension();
+            $nombreArchivo = $producto->id_producto . '.' . $extension;
+            $file->move(public_path('imgs/productos'), $nombreArchivo);
+            $rutaImagen = 'imgs/productos/' . $nombreArchivo;
+            $producto->update([
+        'imagen' => $rutaImagen
+    ]);
         }
 
-        $producto = Producto::create([
-            'nombre'   => $validated['nombre'],
-            'precio'   => $validated['precio'],
-            'marca_id' => $validated['marca_id'],
-            'imagen'   => $rutaImagen,
-            'categoria_id' => $validated['categoria_id']
-        ]);
+
 
         return response()->json([
             'success'  => true,
