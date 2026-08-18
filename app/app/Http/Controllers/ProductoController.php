@@ -26,7 +26,8 @@ class ProductoController extends Controller
             'precio'   => 'required|numeric|min:0',
             'marca_id' => 'required|integer',
             'imagen'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Acepta fotos
-            'categoria_id' => 'required|integer'
+            'categoria_id' => 'required|integer',
+            'stock' => 'required|integer'
         ]);
 
 $producto = Producto::create([
@@ -34,7 +35,8 @@ $producto = Producto::create([
             'precio'   => $validated['precio'],
             'marca_id' => $validated['marca_id'],
             'imagen'   => null,
-            'categoria_id' => $validated['categoria_id']
+            'categoria_id' => $validated['categoria_id'],
+            'stock' => $validated['stock']
         ]);
 
         // Si enviaron una foto, la guarda en la carpeta public/imgs
