@@ -1,19 +1,15 @@
 <?php
 
-use App\Http\Controllers\TestController;   //esta linea es tambien para el formularioLeandro
+use App\Http\Controllers\ProductoController; // <-- Importante: agregamos esta línea
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
-
 
 // Ruta POST para recibir el formulario que dijo Leandro
 Route::post('/guardar-dato', [TestController::class, 'guardar']);
 
-
-
-
-// Ruta principal (Home / Index)
-Route::get('/', function () {
-    return view('index'); // Apunta a resources/views/index.blade.php
-});
+// Ruta principal y filtro dinámico por categoría (reemplaza la ruta '/' anterior)
+Route::get('/', [ProductoController::class, 'categoria']);
+Route::get('/categoria/{nombre?}', [ProductoController::class, 'categoria'])->name('productos.categoria');
 
 // Catálogo de Productos
 Route::get('/productos', function () {

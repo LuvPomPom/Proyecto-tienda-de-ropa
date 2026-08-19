@@ -59,4 +59,39 @@ $producto = Producto::create([
             'producto' => $producto
         ], 201);
     }
+
+
+// NUEVO MÉTODO: Para cargar la vista web con las categorías
+  public function categoria($nombre = 'todas')
+{
+    $query = Producto::query();
+
+    // Mapeo exacto basado en la tabla public.categorias de Supabase
+    $categoriasMap = [
+        'hombre'     => 1,
+        'mujer'      => 2,
+        'unisex'     => 3,
+        'calzado'    => 4,
+        'ropa'       => 5,
+        'accesorios' => 6,
+    ];
+
+    $nombreLimpio = strtolower($nombre);
+
+    if ($nombreLimpio !== 'todas') {
+        if (isset($categoriasMap[$nombreLimpio])) {
+            $query->where('categoria_id', $categoriasMap[$nombreLimpio]);
+        } elseif (is_numeric($nombre)) {
+            $query->where('categoria_id', $nombre);
+        }
+    }
+
+    $productos = $query->get();
+
+    return view('index', [
+        'productos'       => $productos,
+        'categoriaActual' => $nombre
+    ]);
+}
+
 }

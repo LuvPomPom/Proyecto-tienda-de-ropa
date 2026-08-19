@@ -30,14 +30,14 @@
   <text x="67" y="52" font-family="Montserrat, Helvetica, sans-serif" font-size="8" font-weight="500" letter-spacing="4" fill="#777777">STORE</text>
 </svg>
         </a>
-
+        <!-- AGREGUÉ REF HACIA RUTAS DE LARAVEL 19/08/26-->
         <ul class="nav-links">
-            <li><a href="#" class="cat-link" data-category="todas">TODAS</a></li>
-            <li><a href="#" class="cat-link" data-category="mujer">MUJER</a></li>
-            <li><a href="#" class="cat-link" data-category="hombre">HOMBRE</a></li>
-            <li><a href="#" class="cat-link" data-category="calzado">CALZADO</a></li>
-            <li><a href="#" class="cat-link" data-category="accesorios">ACCESORIOS</a></li>
-            <li><a href="#" class="sale cat-link" data-category="sale">SALE</a></li>
+            <li><a href="{{ url('/categoria/todas') }}" class="cat-link">TODAS</a></li>
+            <li><a href="{{ url('/categoria/mujer') }}" class="cat-link">MUJER</a></li>
+            <li><a href="{{ url('/categoria/hombre') }}" class="cat-link">HOMBRE</a></li>
+            <li><a href="{{ url('/categoria/calzado') }}" class="cat-link">CALZADO</a></li>
+            <li><a href="{{ url('/categoria/accesorios') }}" class="cat-link">ACCESORIOS</a></li>
+            <li><a href="{{ url('/categoria/sale') }}" class="sale cat-link">SALE</a></li>
         </ul>
 
         <div class="nav-actions">
@@ -55,6 +55,8 @@
         </div>
     </header>
 
+
+    @if($categoriaActual === 'todas' || $categoriaActual === 'sale')
     <section class="hero">
         <div class="hero-container">
             <div class="hero-left">
@@ -72,6 +74,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <section class="filter-bar">
         <div class="filter-wrapper">
@@ -97,7 +100,25 @@
         <h3 class="section-title">Novedades y Destacados</h3>
 
         <div class="products-grid" id="products-container">
+    @forelse($productos as $producto)
+        <div class="product-card">
+            <div class="product-img">
+                <img src="{{ asset($producto->imagen ?? 'imgs/placeholder.png') }}" alt="{{ $producto->nombre }}">
+            </div>
+            <div class="product-info">
+                <h4>{{ $producto->nombre }}</h4>
+                <div class="price-container">
+                    <span class="price">${{ number_format($producto->precio, 0, ',', '.') }}</span>
+                </div>
+                <button class="btn-buy">AGREGAR AL CARRITO</button>
+            </div>
         </div>
+    @empty
+        <p style="grid-column: 1/-1; text-align: center; padding: 40px;">
+            No hay productos disponibles en esta categoría.
+        </p>
+    @endforelse
+</div>
     </section>
 
     <!-- ======================================================== -->
