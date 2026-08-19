@@ -46,7 +46,6 @@
             </div>
             <div class="user-actions">
                 <a href="/admin/login" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
-                <a href="#" title="Favoritos"><i class="fa-regular fa-heart"></i></a>
                 <div class="cart-trigger" id="open-cart" title="Carrito" style="cursor: pointer;">
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>

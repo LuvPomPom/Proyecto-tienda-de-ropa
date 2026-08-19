@@ -18,17 +18,6 @@ a {
     color: inherit;
 }
 
-/* 1. TOP ANNOUNCEMENT BAR */
-.top-banner {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 8px 10px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
 
 /* 2. SECONDARY HEADER */
 .sub-header {
@@ -184,7 +173,7 @@ a {
     position: relative;
     width: 100%;
     height: 480px;
-    background: linear-gradient(135deg, #fff12f 0%, #b80012 100%);
+    background: linear-gradient(135deg, #f500ab 0%, #04082b 100%);
     color: #fff;
     display: flex;
     align-items: center;
