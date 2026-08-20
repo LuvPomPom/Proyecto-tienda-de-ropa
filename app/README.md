@@ -1,58 +1,40 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🛍️ AI VOGA STORE — E-Commerce Web Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-## About Laravel
+**AI VOGA STORE** es una plataforma e-commerce moderna desarrollada con **Laravel 13**, **PHP 8.4** y una base de datos **PostgreSQL alojada en Supabase**. El sistema cuenta con un catálogo dinámico filtrable por categorías, filtrado de productos por rango de precio y búsqueda en tiempo real, junto con un panel de administración interactivo para la gestión centralizada de inventario y cargas multimedia.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠️ Tecnologías Utilizadas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Backend
+* **PHP**: 8.4.24
+* **Framework**: Laravel 13.23.0
+* **Base de Datos**: PostgreSQL / Cloud-hosted en Supabase (`pgsql` driver)
+* **ORM**: Eloquent ORM
 
-## Learning Laravel
+### Frontend
+* **Plantillado**: Blade Templates
+* **Estilos**: CSS Custom & Bootstrap 5
+* **Interactividad**: JavaScript ES6+ (Fetch API, manipulación asíncrona del DOM)
+* **Tipografías e Iconos**: Google Fonts / SVG Icons
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Características Principales
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 🏪 Tienda (Frontoffice)
+* **Navegación Dinámica por Categorías**: Filtrado directo desde la URL (`/categoria/{nombre}`) mediante traducción limpia a IDs numéricos de base de datos (`Hombre`, `Mujer`, `Unisex`, `Calzado`, `Ropa`, `Accesorios`).
+* **Buscador en Tiempo Real / API Filter**: Búsqueda insensible a mayúsculas/minúsculas mediante la función `LOWER()` de PostgreSQL.
+* **Banner 'SALE' Condicional**: Ajuste dinámico en la vista Blade (`@if`) para ocultar el hero banner en secciones específicas.
+* **Gestión de Placeholders de Imágenes**: Fallback automático (`?? 'imgs/placeholder.png'`) cuando un producto no cuenta con imagen asociada.
 
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 🛡️ Panel de Administración (Backoffice)
+* **Gestión de Inventario**: Interfaz para dar de alta nuevos productos asociando nombre, precio, marca, categoría, stock e imagen.
+* **Procesamiento de Archivos Multimedia**: Asignación automática de nombres basados en la clave primaria (`id_producto.ext`) y almacenamiento estructurado en `public/imgs/productos/`.
+* **Carga Asíncrona (AJAX / Fetch API)**: Consumo en segundo plano de la API `/api/productos` para renderizado dinámico del inventario.

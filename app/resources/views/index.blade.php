@@ -126,7 +126,7 @@
     <!-- ======================================================== -->
     <section style="max-width: 600px; margin: 40px auto; padding: 25px; border: 2px dashed #000; background: #fafafa; text-align: center;">
         <h3 style="margin-bottom: 15px; font-weight: 800; font-size: 1.2rem; text-transform: uppercase;">
-            🧪 Prueba Backend $\rightarrow$ Supabase
+            PRUEBA BACKEND &rightarrow; SUPABASE
         </h3>
 
         @if(session('mensaje'))
