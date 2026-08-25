@@ -5,32 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Ropa</title>
 
-    @vite(['resources/css/styles.css', 'resources/js/api.js', 'resources/js/main.js'])
+    <!-- FontAwesome CDN Directo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- CSS desde la carpeta public -->
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 
-    <div class="sub-header">
-        <a href="#">ayuda</a>
-        <a href="#">envíos y devoluciones</a>
-        <span><img src="https://flagcdn.com/w20/uy.png" class="flag-icon" alt="Uruguay"></span>
-    </div>
-
     <header class="navbar">
-        <a href="index.html" class="logo">
+        <a href="/" class="logo">
             <svg width="220" height="70" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Isotipo Minimalista (Entrelazado V y A estilizado) -->
-  <path d="M25 20L35 45H29L25 34L21 45H15L25 20Z" fill="#111111"/>
-  <path d="M25 26L22.5 33H27.5L25 26Z" fill="#FFFFFF"/>
-  <path d="M38 20H43V45H38V20Z" fill="#777777"/>
-  
-  <!-- Tipografía del Logo -->
-  <text x="65" y="42" font-family="Montserrat, Helvetica, sans-serif" font-size="28" font-weight="300" letter-spacing="8" fill="#111111">VOGA</text>
-  
-  <!-- Sutil línea inferior o bajada -->
-  <text x="67" y="52" font-family="Montserrat, Helvetica, sans-serif" font-size="8" font-weight="500" letter-spacing="4" fill="#777777">STORE</text>
-</svg>
+                <path d="M25 20L35 45H29L25 34L21 45H15L25 20Z" fill="#111111"/>
+                <path d="M25 26L22.5 33H27.5L25 26Z" fill="#FFFFFF"/>
+                <path d="M38 20H43V45H38V20Z" fill="#777777"/>
+                <text x="65" y="42" font-family="Montserrat, Helvetica, sans-serif" font-size="28" font-weight="300" letter-spacing="8" fill="#111111">VOGA</text>
+                <text x="67" y="52" font-family="Montserrat, Helvetica, sans-serif" font-size="8" font-weight="500" letter-spacing="4" fill="#777777">STORE</text>
+            </svg>
         </a>
-        <!-- AGREGUÉ REF HACIA RUTAS DE LARAVEL 19/08/26-->
+
         <ul class="nav-links">
             <li><a href="{{ url('/categoria/todas') }}" class="cat-link">TODAS</a></li>
             <li><a href="{{ url('/categoria/mujer') }}" class="cat-link">MUJER</a></li>
@@ -46,7 +39,7 @@
                 <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
             <div class="user-actions">
-                <a href="admin/login.html" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
+                <a href="/login" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
                 <div class="cart-trigger" id="open-cart" title="Carrito">
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>
@@ -54,27 +47,6 @@
             </div>
         </div>
     </header>
-
-
-    @if($categoriaActual === 'todas' || $categoriaActual === 'sale')
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-left">
-                <h2>SALE</h2>
-                <p>LLEVATE HASTA UN 50% OFF EN EL CATÁLOGO SELECCIONADO.</p>
-                <a href="#catalogo" class="btn-adidas">
-                    COMPRAR AHORA <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="hero-right">
-                <div class="big-text">HASTA</div>
-                <div class="percentage">50%</div>
-                <div class="off-text">OFF</div>
-            </div>
-        </div>
-    </section>
-    @endif
 
     <section class="filter-bar">
         <div class="filter-wrapper">
@@ -89,10 +61,6 @@
                     <option value="accesorios">ACCESORIOS</option>
                 </select>
             </div>
-            <div class="filter-item">
-                <label for="price-range">PRECIO MÁXIMO: $ <span id="price-val">10000</span></label>
-                <input type="range" id="price-range" min="500" max="10000" step="100" value="10000">
-            </div>
         </div>
     </section>
 
@@ -100,59 +68,32 @@
         <h3 class="section-title">Novedades y Destacados</h3>
 
         <div class="products-grid" id="products-container">
-    @forelse($productos as $producto)
-        <div class="product-card">
-            <div class="product-img">
-                <img src="{{ asset($producto->imagen ?? 'imgs/placeholder.png') }}" alt="{{ $producto->nombre }}">
-            </div>
-            <div class="product-info">
-                <h4>{{ $producto->nombre }}</h4>
-                <div class="price-container">
-                    <span class="price">${{ number_format($producto->precio, 0, ',', '.') }}</span>
+            @forelse($productos as $producto)
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="{{ asset($producto->imagen ?? 'imgs/placeholder.png') }}" alt="{{ $producto->nombre }}">
+                    </div>
+                    <div class="product-info">
+                        <h4>{{ $producto->nombre }}</h4>
+                        <div class="price-container">
+                            <span class="price">${{ number_format($producto->precio, 0, ',', '.') }}</span>
+                        </div>
+                        <button class="btn-buy">AGREGAR AL CARRITO</button>
+                    </div>
                 </div>
-                <button class="btn-buy">AGREGAR AL CARRITO</button>
-            </div>
+            @empty
+                <p style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                    No hay productos disponibles en esta categoría.
+                </p>
+            @endforelse
         </div>
-    @empty
-        <p style="grid-column: 1/-1; text-align: center; padding: 40px;">
-            No hay productos disponibles en esta categoría.
-        </p>
-    @endforelse
-</div>
     </section>
 
-    <!-- ======================================================== -->
-    <!-- SECCIÓN DE PRUEBA LEANDRO: FORMULARIO POST A SUPABASE    -->
-    <!-- ======================================================== -->
-    <section style="max-width: 600px; margin: 40px auto; padding: 25px; border: 2px dashed #000; background: #fafafa; text-align: center;">
-        <h3 style="margin-bottom: 15px; font-weight: 800; font-size: 1.2rem; text-transform: uppercase;">
-            PRUEBA BACKEND &rightarrow; SUPABASE
-        </h3>
-
-        @if(session('mensaje'))
-            <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-weight: bold;">
-                {{ session('mensaje') }}
-            </div>
-        @endif
-
-        <form action="/guardar-dato" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
-            @csrf
-            
-            <label for="nombre" style="font-weight: 600; text-align: left;">Ingrese un nombre/producto de prueba:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Ej: Remera de prueba" required style="padding: 10px; border: 1px solid #ccc; font-size: 14px;">
-
-            <button type="submit" class="btn-adidas" style="cursor: pointer; padding: 12px; background: #000; color: #fff; font-weight: bold; border: none; text-transform: uppercase;">
-                Guardar en Supabase
-            </button>
-        </form>
-    </section>
-    <!-- ======================================================== -->
-
+    <!-- Modales y Drawer del Carrito -->
     <div class="modal" id="product-modal">
         <div class="modal-content">
             <span class="close-modal" id="close-product-modal">&times;</span>
-            <div id="modal-detail-body">
-            </div>
+            <div id="modal-detail-body"></div>
         </div>
     </div>
 
@@ -161,8 +102,7 @@
             <h3>TU CARRITO</h3>
             <span class="close-cart-btn" id="close-cart">&times;</span>
         </div>
-        <div class="cart-items" id="cart-items-container">
-        </div>
+        <div class="cart-items" id="cart-items-container"></div>
         <div class="cart-footer">
             <div class="total-row">
                 <span>TOTAL:</span>
@@ -201,9 +141,8 @@
         </div>
     </div>
 
-    <a href="https://wa.me/59800000000" class="whatsapp-btn" target="_blank" title="Contactar por WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
+    <!-- Scripts desde la carpeta public -->
+    <script src="{{ asset('js/api.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 </html>

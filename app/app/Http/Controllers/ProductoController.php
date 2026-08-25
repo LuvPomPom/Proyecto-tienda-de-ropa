@@ -8,16 +8,25 @@ use Illuminate\Http\Request;
 class ProductoController extends Controller
 {
     public function index(Request $request)
-    {
+{
+    try {
         $query = Producto::query();
 
         if ($request->has('buscar') && !empty($request->buscar)) {
             $buscar = mb_strtolower($request->buscar);
-            $query->whereRaw('LOWER(nombre) LIKE ?', ["%{$buscar}%"]);
+            // ILIKE es la forma estándar y segura para Postgres/Supabase insensible a mayúsculas
+            $query->where('nombre', 'ILIKE', "%{$buscar}%");
         }
 
-        return response()->json($query->get());
+        return response()->json($query->get(), 200);
+    } catch (\Exception $e) {
+        // Devuelve el error exacto en JSON para depurar en consola
+        return response()->json([
+            'error' => 'Error en la base de datos',
+            'details' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function store(Request $request)
     {
@@ -62,11 +71,11 @@ $producto = Producto::create([
 
 
 // NUEVO MÉTODO: Para cargar la vista web con las categorías
-  public function categoria($nombre = 'todas')
+public function categoria($nombre = 'todas')
 {
     $query = Producto::query();
 
-    // Mapeo exacto basado en la tabla public.categorias de Supabase
+    // Mapeo basado en la tabla public.categorias de Supabase
     $categoriasMap = [
         'hombre'     => 1,
         'mujer'      => 2,
@@ -74,6 +83,7 @@ $producto = Producto::create([
         'calzado'    => 4,
         'ropa'       => 5,
         'accesorios' => 6,
+        'sale'       => 7, // Agregado por si tienes ID para ofertas en Supabase
     ];
 
     $nombreLimpio = strtolower($nombre);
@@ -82,11 +92,16 @@ $producto = Producto::create([
         if (isset($categoriasMap[$nombreLimpio])) {
             $query->where('categoria_id', $categoriasMap[$nombreLimpio]);
         } elseif (is_numeric($nombre)) {
-            $query->where('categoria_id', $nombre);
+            $query->where('categoria_id', (int)$nombre);
         }
     }
 
-    $productos = $query->get();
+    try {
+        $productos = $query->get();
+    } catch (\Exception $e) {
+        // En caso de error de conexión con Supabase o tabla, retorna una colección vacía
+        $productos = collect(); 
+    }
 
     return view('index', [
         'productos'       => $productos,

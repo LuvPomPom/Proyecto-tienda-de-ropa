@@ -9,16 +9,24 @@ class Producto extends Model
 {
     use HasFactory;
 
-    protected $table = 'producto'; // <--- Nombre exacto en Supabase
-    protected $primaryKey = 'id_producto'; // <--- ID exacto
-    public $timestamps = false;
+    // Supabase espera la tabla en plural (o el nombre exacto de la BD)
+    protected $table = 'productos'; 
 
+    // Indicamos que la clave primaria es id_producto y no 'id'
+    protected $primaryKey = 'id_producto';
+
+    // Campos permitidos para inserción masiva desde el Admin Panel
     protected $fillable = [
         'nombre',
         'precio',
-        'marca_id',
-        'imagen',
+        'stock',
+        'marca_id', // O 'id_marca' según tu migración
         'categoria_id',
-        'stock'
+        'imagen',
     ];
+
+    public function marca()
+    {
+        return $this->belongsTo(Marca::class, 'marca_id', 'id');
+    }
 }

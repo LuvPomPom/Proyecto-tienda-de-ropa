@@ -4,12 +4,19 @@ use App\Http\Controllers\ProductoController; // <-- Importante: agregamos esta l
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::post('/productos', [ProductoController::class, 'store'])->name('productos.store');
+
 // Ruta POST para recibir el formulario que dijo Leandro
 Route::post('/guardar-dato', [TestController::class, 'guardar']);
 
 // Ruta principal y filtro dinámico por categoría (reemplaza la ruta '/' anterior)
 Route::get('/', [ProductoController::class, 'categoria']);
 Route::get('/categoria/{nombre?}', [ProductoController::class, 'categoria'])->name('productos.categoria');
+
+
+// Ruta API que consume tu main.js / api.js
+Route::get('/api/productos', [ProductoController::class, 'index']);
 
 // Catálogo de Productos
 Route::get('/productos', function () {

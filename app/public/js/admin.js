@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formProducto = document.getElementById('form-producto');
     const tablaProductos = document.getElementById('tabla-productos');
 
-    // 1. Cargar productos en la tabla
+    // 1. Cargar productos
     async function cargarProductos() {
         if (!tablaProductos) return;
 
@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/productos');
             const productos = await res.json();
 
-            if (productos.length === 0) {
-                tablaProductos.innerHTML = `<tr><td colspan="4" style="text-align:center;">No hay productos registrados.</td></tr>`;
+            if (!productos.length) {
+                tablaProductos.innerHTML = `<tr><td colspan="5" style="text-align:center;">No hay productos registrados.</td></tr>`;
                 return;
             }
 
@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
                              width="40" height="40" style="object-fit:cover; border-radius:4px;">
                     </td>
                     <td><strong>${p.nombre}</strong></td>
-                    <td>$${parseFloat(p.precio).toFixed(2)}</td>
-                    <td>${p.marca_id}</td>
+                    <td>$${Number(p.precio).toFixed(2)}</td>
+                    <td>${p.stock ?? 0}</td>
+                    <td><button onclick="eliminarProducto(${p.id_producto})" class="btn-danger"><i class="fa-solid fa-trash"></i></button></td>
                 </tr>
             `).join('');
         } catch (error) {
@@ -31,31 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 2. Guardar producto con foto
+    // 2. Guardar producto
     if (formProducto) {
         formProducto.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Usamos FormData para enviar el archivo de imagen
-            const formData = new FormData();
-            formData.append('nombre', document.getElementById('nombre').value.trim());
-            formData.append('precio', document.getElementById('precio').value);
-            formData.append('marca_id', document.getElementById('marca_id').value);
-            formData.append('categoria_id', document.getElementById('categoria_id').value);
-            formData.append('stock', document.getElementById('stock').value);
-
-            const fileInput = document.getElementById('imagen');
-            if (fileInput && fileInput.files[0]) {
-                formData.append('imagen', fileInput.files[0]);
-            }
+            // new FormData toma automáticamente todos los inputs con atributo name=""
+            const formData = new FormData(formProducto);
 
             try {
                 const response = await fetch('/api/productos', {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json'
-                        // NOTA: No agregamos 'Content-Type' aquí, FormData lo configura solo
-                    },
+                    headers: { 'Accept': 'application/json' },
                     body: formData
                 });
 
@@ -66,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     formProducto.reset();
                     cargarProductos();
                 } else {
-                    alert('Error al guardar: ' + (data.message || 'Verifica los datos.'));
+                    alert('Error: ' + (data.message || 'Verifica los datos enviados.'));
                 }
             } catch (error) {
                 console.error('Error enviando datos:', error);
@@ -75,6 +63,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Cargar la lista al iniciar
     cargarProductos();
 });
