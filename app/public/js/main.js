@@ -1,6 +1,4 @@
-// Variable global para almacenar los productos cargados
-let productosLista = [];
-let carrito = JSON.parse(localStorage.getItem('cart_items')) || [];
+let productosLista = [], carrito = JSON.parse(localStorage.getItem('cart_items')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarProductosDesdeAPI();
@@ -9,121 +7,79 @@ document.addEventListener('DOMContentLoaded', () => {
     initCartEvents();
 });
 
-// 1. CARGAR PRODUCTOS DESDE LA API DE LARAVEL / SUPABASE
+// 1. CARGA Y NORMALIZACIÓN DE PRODUCTOS
 async function cargarProductosDesdeAPI(busqueda = '') {
     try {
-        const url = busqueda 
-            ? `/api/productos?buscar=${encodeURIComponent(busqueda)}`
-            : '/api/productos';
+        const res = await fetch(`/api/productos${busqueda ? `?buscar=${encodeURIComponent(busqueda)}` : ''}`);
+        if (!res.ok) throw new Error();
+        const datos = await res.json();
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Error al conectar con la API');
-
-        const datos = await response.json();
-
-        productosLista = datos.map(p => {
-            // Formatear la URL de la imagen para asegurarnos de que sea absoluta o correcta
-            let imgUrl = 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300';
-            if (p.imagen && p.imagen !== 'NULL' && p.imagen.trim() !== '') {
-                imgUrl = p.imagen.startsWith('http') || p.imagen.startsWith('/') 
-                    ? p.imagen 
-                    : `/${p.imagen}`;
-            }
-
-            return {
-                id: p.id_producto !== undefined && p.id_producto !== null ? p.id_producto : p.id,
-                nombre: p.nombre || 'Sin nombre',
-                precio: parseFloat(p.precio) || 0,
-                imagen: imgUrl,
-                categoria: p.categoria_id ? p.categoria_id.toString() : 'todas',
-                descripcion: p.nombre || '',
-                talles: ['Único']
-            };
-        });
+        productosLista = datos.map(p => ({
+            id: p.id_producto ?? p.id,
+            nombre: p.nombre || 'Sin nombre',
+            precio: parseFloat(p.precio) || 0,
+            imagen: p.imagen ? (p.imagen.startsWith('http') || p.imagen.startsWith('/') ? p.imagen : `/${p.imagen}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+            categoria: p.categoria_id ? p.categoria_id.toString() : 'todas',
+            descripcion: p.nombre || ''
+        }));
 
         renderProductos(productosLista);
-    } catch (error) {
-        console.error('Error cargando productos:', error);
-    }
+    } catch (e) { console.error('Error al cargar:', e); }
 }
 
-// RENDERIZAR TARJETAS EN EL HTML
+// 2. RENDERIZADO DE TIENDA
 function renderProductos(lista) {
-    // Soporta tanto la grilla principal como el contenedor de carrito
     const container = document.getElementById('products-container');
     if (!container) return;
-    
-    container.innerHTML = '';
 
-    if (lista.length === 0) {
-        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px 0; font-size: 1.1rem;">No hay productos disponibles.</p>`;
+    if (!lista.length) {
+        container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px 0;">No hay productos.</p>`;
         return;
     }
 
-    lista.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-            <img src="${prod.imagen}" alt="${prod.nombre}" onclick="abrirModalDetalle(${prod.id})">
+    container.innerHTML = lista.map(p => `
+        <div class="product-card">
+            <div class="product-img"><img src="${p.imagen}" alt="${p.nombre}" onclick="abrirModalDetalle(${p.id})"></div>
             <div class="product-info">
-                <h3 onclick="abrirModalDetalle(${prod.id})">${prod.nombre}</h3>
-                <span class="product-price">$${prod.precio.toLocaleString('es-AR')}</span>
-                <button class="btn-add" onclick="agregarAlCarrito(${prod.id})">Agregar al Carrito</button>
+                <h4 onclick="abrirModalDetalle(${p.id})">${p.nombre}</h4>
+                <div class="price-container"><span class="price">$${p.precio.toLocaleString('es-AR')}</span></div>
+                <button class="btn-buy" onclick="agregarAlCarrito(${p.id})">Agregar al Carrito</button>
             </div>
-        `;
-        container.appendChild(card);
-    });
+        </div>
+    `).join('');
 }
 
-// INICIALIZAR FILTROS Y BÚSQUEDA
+// 3. FILTROS Y BÚSQUEDA
 function initFiltros() {
     const searchInput = document.getElementById('search-input');
     const categorySelect = document.getElementById('category-filter');
     const priceRange = document.getElementById('price-range');
-    const priceVal = document.getElementById('price-val');
+    let timer;
 
-    let timeoutBusqueda = null;
+    searchInput?.addEventListener('input', e => {
+        clearTimeout(timer);
+        timer = setTimeout(() => cargarProductosDesdeAPI(e.target.value.trim()), 300);
+    });
 
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(timeoutBusqueda);
-            timeoutBusqueda = setTimeout(() => {
-                const termino = e.target.value.trim();
-                cargarProductosDesdeAPI(termino);
-            }, 300);
-        });
-    }
+    const filtrar = () => {
+        const cat = categorySelect?.value || 'todas';
+        const maxPrice = priceRange ? parseFloat(priceRange.value) : Infinity;
+        const priceVal = document.getElementById('price-val');
+        if (priceVal && priceRange) priceVal.textContent = maxPrice;
 
-    function filtrarLocal() {
-        const categoria = categorySelect ? categorySelect.value : 'todas';
-        const precioMax = priceRange ? parseFloat(priceRange.value) : Infinity;
+        renderProductos(productosLista.filter(p => (cat === 'todas' || p.categoria === cat) && (isNaN(maxPrice) || p.precio <= maxPrice)));
+    };
 
-        if (priceVal && priceRange) {
-            priceVal.textContent = precioMax;
-        }
-
-        const filtrados = productosLista.filter(p => {
-            const coincideCat = categoria === 'todas' || p.categoria === categoria;
-            const coincidePrecio = isNaN(precioMax) || p.precio <= precioMax;
-            return coincideCat && coincidePrecio;
-        });
-
-        renderProductos(filtrados);
-    }
-
-    if (categorySelect) categorySelect.addEventListener('change', filtrarLocal);
-    if (priceRange) priceRange.addEventListener('input', filtrarLocal);
+    categorySelect?.addEventListener('change', filtrar);
+    priceRange?.addEventListener('input', filtrar);
 }
 
-// MODAL DETALLE DE PRODUCTO
+// 4. MODALES
 function abrirModalDetalle(id) {
     const prod = productosLista.find(p => p.id === id);
-    if (!prod) return;
-
     const modal = document.getElementById('product-modal');
     const body = document.getElementById('modal-detail-body');
-
-    if (!modal || !body) return;
+    if (!prod || !modal || !body) return;
 
     body.innerHTML = `
         <div style="display: flex; gap: 20px; flex-wrap: wrap;">
@@ -131,43 +87,30 @@ function abrirModalDetalle(id) {
             <div style="flex: 1;">
                 <h2>${prod.nombre}</h2>
                 <p style="color: #64748b; margin: 8px 0;">${prod.descripcion}</p>
-                <p style="font-size: 20px; font-weight: bold; color: #0284c7;">$${prod.precio.toLocaleString('es-AR')}</p>
-                <button class="btn-checkout" onclick="agregarAlCarrito(${prod.id}); cerrarModal('product-modal');">Agregar al Carrito</button>
+                <p style="font-size: 20px; font-weight: bold;">$${prod.precio.toLocaleString('es-AR')}</p>
+                <button class="btn-checkout" style="margin-top: 15px;" onclick="agregarAlCarrito(${prod.id}); cerrarModal('product-modal');">Agregar al Carrito</button>
             </div>
         </div>
     `;
     modal.style.display = 'flex';
 }
 
-function cerrarModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) modal.style.display = 'none';
-}
+const cerrarModal = id => { const m = document.getElementById(id); if (m) m.style.display = 'none'; };
 
-// LÓGICA DEL CARRITO
+// 5. GESTIÓN DEL CARRITO
 function agregarAlCarrito(id) {
     const prod = productosLista.find(p => p.id === id);
     if (!prod) return;
-
-    const existe = carrito.find(item => item.id === id);
-
-    if (existe) {
-        existe.cantidad++;
-    } else {
-        carrito.push({ ...prod, cantidad: 1 });
-    }
-
+    const item = carrito.find(i => i.id === id);
+    item ? item.cantidad++ : carrito.push({ ...prod, cantidad: 1 });
     guardarYActualizarCarrito();
 }
 
 function cambiarCantidad(id, cambio) {
     const item = carrito.find(i => i.id === id);
     if (!item) return;
-
     item.cantidad += cambio;
-    if (item.cantidad <= 0) {
-        carrito = carrito.filter(i => i.id !== id);
-    }
+    if (item.cantidad <= 0) carrito = carrito.filter(i => i.id !== id);
     guardarYActualizarCarrito();
 }
 
@@ -177,60 +120,45 @@ function guardarYActualizarCarrito() {
 }
 
 function actualizarCarritoUI() {
-    // Se buscan tanto las referencias de la vista carrito como las del modal lateral
     const container = document.getElementById('cart-items-container') || document.getElementById('carrito-contenedor');
     const cartCount = document.getElementById('cart-count');
     const cartTotal = document.getElementById('cart-total') || document.getElementById('carrito-total');
+    const badge = document.querySelector('.cart-badge');
 
     if (!container) return;
 
-    container.innerHTML = '';
-    let total = 0;
-    let totalItems = 0;
+    let total = 0, totalItems = 0;
 
-    if (carrito.length === 0) {
+    if (!carrito.length) {
         container.innerHTML = `<p style="text-align: center; color: #666; padding: 20px;">Tu carrito está vacío.</p>`;
     } else {
-        carrito.forEach(item => {
+        container.innerHTML = carrito.map(item => {
             total += item.precio * item.cantidad;
             totalItems += item.cantidad;
-
-            const div = document.createElement('div');
-            div.className = 'cart-item';
-            div.style.cssText = 'display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;';
-            div.innerHTML = `
-                <img src="${item.imagen}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
-                <div style="flex:1;">
-                    <strong>${item.nombre}</strong>
-                    <div>$${item.precio.toLocaleString('es-AR')}</div>
-                    <div class="cart-controls">
-                        <button onclick="cambiarCantidad(${item.id}, -1)">-</button>
-                        <span>${item.cantidad}</span>
-                        <button onclick="cambiarCantidad(${item.id}, 1)">+</button>
+            return `
+                <div class="cart-item">
+                    <img src="${item.imagen}">
+                    <div style="flex:1;">
+                        <strong>${item.nombre}</strong>
+                        <div>$${item.precio.toLocaleString('es-AR')}</div>
+                        <div class="cart-controls">
+                            <button onclick="cambiarCantidad(${item.id}, -1)">-</button>
+                            <span>${item.cantidad}</span>
+                            <button onclick="cambiarCantidad(${item.id}, 1)">+</button>
+                        </div>
                     </div>
                 </div>
             `;
-            container.appendChild(div);
-        });
+        }).join('');
     }
 
     if (cartCount) cartCount.textContent = totalItems;
+    if (badge) badge.textContent = totalItems;
     if (cartTotal) cartTotal.textContent = `$${total.toLocaleString('es-AR')}`;
-    
-    // Si usas el badge de FontAwesome
-    const badge = document.querySelector('.fa-bag-shopping');
-    if (badge) badge.setAttribute('data-count', totalItems);
 }
 
 function initCartEvents() {
     const drawer = document.getElementById('cart-drawer');
-    const openCartBtn = document.getElementById('open-cart');
-    const closeCartBtn = document.getElementById('close-cart');
-
-    if (openCartBtn && drawer) {
-        openCartBtn.addEventListener('click', () => drawer.classList.add('open'));
-    }
-    if (closeCartBtn && drawer) {
-        closeCartBtn.addEventListener('click', () => drawer.classList.remove('open'));
-    }
+    document.getElementById('open-cart')?.addEventListener('click', () => drawer?.classList.add('open'));
+    document.getElementById('close-cart')?.addEventListener('click', () => drawer?.classList.remove('open'));
 }

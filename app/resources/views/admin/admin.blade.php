@@ -3,121 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración</title>
-
-    <!-- FontAwesome para Íconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- CSS desde la carpeta public -->
+    <title>Admin Panel</title>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body>
 
-    <div class="admin-container">
-        <aside class="sidebar">
-            <h2>Admin Panel</h2>
-            <nav>
-                <a href="/admin" class="active"><i class="fa-solid fa-box"></i> Productos</a>
-                <a href="#"><i class="fa-solid fa-list-check"></i> Categorías</a>
-                <a href="#"><i class="fa-solid fa-cart-shopping"></i> Pedidos</a>
-                <a href="/" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
-            </nav>
-        </aside>
+    <aside>
+        <h2>Admin Panel</h2>
+        <nav>
+            <a href="/admin">Productos</a>
+            <a href="/">Salir</a>
+        </nav>
+    </aside>
 
-        <main class="main-content">
-            <header class="topbar">
-                <h1>Gestión de Productos</h1>
-                <span class="user-badge"><i class="fa-solid fa-user-shield"></i> Administrador</span>
-            </header>
+    <main>
+        <h1>Gestión de Productos</h1>
 
-            <div class="content-grid">
+        <form id="form-producto" action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="text" name="nombre" placeholder="Nombre (ej: Nike Air Max)" required>
+            <input type="number" name="precio" step="0.01" placeholder="Precio" required>
+            <input type="number" name="stock" placeholder="Stock" required>
+            
+            <select name="categoria_id" required>
+                <option value="">Categoría</option>
+                <option value="1">Deportivos</option>
+                <option value="2">Urbanos</option>
+                <option value="3">Formales</option>
+            </select>
 
-                <section class="card form-card">
-                    <h2><i class="fa-solid fa-plus"></i> Nuevo Producto</h2>
-                    <form id="form-producto" action="{{ route('productos.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
+            <input type="file" name="imagen" accept="image/*">
+            <button type="submit">Guardar Producto</button>
+        </form>
 
-                        <div class="input-group">
-                            <label for="nombre">Nombre del Producto</label>
-                            <input type="text" id="nombre" name="nombre" placeholder="Ej: Zapatillas Adidas" required>
-                        </div>
+        <h2>Inventario</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-productos">
+                <tr><td colspan="4">Cargando...</td></tr>
+            </tbody>
+        </table>
+    </main>
 
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="precio">Precio ($)</label>
-                                <input type="number" id="precio" name="precio" step="0.01" placeholder="2990" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="stock">Stock</label>
-                                <input type="number" id="stock" name="stock" placeholder="15" required>
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="marca_id">Marca</label>
-                                <select id="marca_id" name="marca_id" required>
-                                    <option value="">Seleccionar marca</option>
-                                    <option value="1">Nike</option>
-                                    <option value="2">Adidas</option>
-                                    <option value="3">Rebook</option>
-                                </select>
-                            </div>
-
-                            <div class="input-group">
-                                <label for="categoria_id">Categoría</label>
-                                <select id="categoria_id" name="categoria_id" required>
-                                    <option value="">Seleccionar categoría</option>
-                                    <option value="1">Hombre</option>
-                                    <option value="2">Mujer</option>
-                                    <option value="3">Unisex</option>
-                                    <option value="4">Calzado</option>
-                                    <option value="5">Ropa</option>
-                                    <option value="6">Accesorios</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="imagen">Imagen del Producto</label>
-                            <input type="file" id="imagen" name="imagen" accept="image/*">
-                        </div>
-
-                        <button type="submit" class="btn-primary">
-                            <i class="fa-solid fa-floppy-disk"></i> Guardar Producto
-                        </button>
-                    </form>
-                </section>
-
-                <section class="card table-card">
-                    <h2><i class="fa-solid fa-list"></i> Inventario Actual</h2>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Imagen</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Stock</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">
-                                        Cargando productos...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-            </div>
-        </main>
-    </div>
-
-    <!-- JS desde la carpeta public -->
     <script src="{{ asset('js/admin.js') }}"></script>
 </body>
 </html>
