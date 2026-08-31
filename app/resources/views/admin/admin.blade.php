@@ -11,7 +11,6 @@
     <aside>
         <h2>Admin Panel</h2>
         <nav>
-            <a href="/admin">Productos</a>
             <a href="/">Salir</a>
         </nav>
     </aside>

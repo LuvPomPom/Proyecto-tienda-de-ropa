@@ -16,6 +16,7 @@
             <li><a href="{{ url('/categoria/todas') }}" class="cat-link">TODOS</a></li>
             <li><a href="{{ url('/categoria/deportivos') }}" class="cat-link">DEPORTIVOS</a></li>
             <li><a href="{{ url('/categoria/urbanos') }}" class="cat-link">URBANOS</a></li>
+            <li><a href="{{ url('/categoria/formales') }}" class="cat-link">FORMALES</a></li>
         </ul>
 
         <div class="nav-actions">
@@ -33,18 +34,6 @@
         </div>
     </header>
 
-    <section class="filter-bar">
-        <div class="filter-wrapper">
-            <div class="filter-item">
-                <label for="category-filter">CATEGORÍA:</label>
-                <select id="category-filter">
-                    <option value="todas">TODAS</option>
-                    <option value="deportivos">DEPORTIVOS</option>
-                    <option value="urbanos">URBANOS</option>
-                </select>
-            </div>
-        </div>
-    </section>
 
     <section class="products-section" id="catalogo">
         <h3 class="section-title">Catálogo de Calzado</h3>
