@@ -26,8 +26,8 @@
             <div class="user-actions">
                 <a href="/login" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
                 <div class="cart-trigger" id="open-cart" title="Carrito">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span id="cart-count" class="cart-badge">0</span>
+                   <a href="{{ url('/carrito') }}"> <i class="fa-solid fa-bag-shopping"></i>
+                     </a>
                 </div>
             </div>
         </div>
@@ -78,42 +78,7 @@
         </div>
     </div>
 
-    <div class="cart-drawer" id="cart-drawer">
-        <div class="cart-header">
-            <h3>TU CARRITO</h3>
-            <span class="close-cart-btn" id="close-cart">&times;</span>
-        </div>
-        <div class="cart-items" id="cart-items-container"></div>
-        <div class="cart-footer">
-            <div class="total-row">
-                <span>TOTAL:</span>
-                <span id="cart-total">$0</span>
-            </div>
-            <button class="btn-checkout" id="checkout-btn">FINALIZAR COMPRA</button>
-        </div>
-    </div>
 
-    <div class="modal" id="checkout-modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-checkout">&times;</span>
-            <h2 style="font-weight: 900; margin-bottom: 15px;">FINALIZAR COMPRA</h2>
-            <form id="checkout-form">
-                <div class="form-group">
-                    <label>Nombre Completo</label>
-                    <input type="text" required placeholder="Ej: Juan Pérez">
-                </div>
-                <div class="form-group">
-                    <label>Dirección</label>
-                    <input type="text" required placeholder="Ej: Av. 18 de Julio 1234">
-                </div>
-                <div class="form-group">
-                    <label>Teléfono</label>
-                    <input type="tel" required placeholder="Ej: 099 123 456">
-                </div>
-                <button type="submit" class="btn-buy" style="width: 100%; margin-top: 15px;">CONFIRMAR COMPRA</button>
-            </form>
-        </div>
-    </div>
 
     <script src="{{ asset('js/api.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>

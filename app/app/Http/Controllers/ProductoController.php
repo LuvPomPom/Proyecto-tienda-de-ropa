@@ -34,7 +34,7 @@ class ProductoController extends Controller
             'precio'       => 'required|numeric|min:0',
             'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'categoria_id' => 'required|integer',
-            'stock'        => 'required|integer'
+            'stock'        => 'required|integer|min:0'
         ]);
 
         // 2. Quitamos 'marca_id' al crear el registro

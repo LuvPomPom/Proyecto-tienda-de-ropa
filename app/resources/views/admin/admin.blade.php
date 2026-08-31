@@ -36,22 +36,5 @@
             <button type="submit">Guardar Producto</button>
         </form>
 
-        <h2>Inventario</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
-            <tbody id="tabla-productos">
-                <tr><td colspan="4">Cargando...</td></tr>
-            </tbody>
-        </table>
-    </main>
-
-    <script src="{{ asset('js/admin.js') }}"></script>
 </body>
 </html>
