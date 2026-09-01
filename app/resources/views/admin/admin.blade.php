@@ -9,7 +9,6 @@
 <body>
 
     <aside>
-        <h2>Admin Panel</h2>
         <nav>
             <a href="/">Salir</a>
         </nav>

@@ -49,31 +49,6 @@ function renderProductos(lista) {
     `).join('');
 }
 
-// 3. FILTROS Y BÚSQUEDA
-function initFiltros() {
-    const searchInput = document.getElementById('search-input');
-    const categorySelect = document.getElementById('category-filter');
-    const priceRange = document.getElementById('price-range');
-    let timer;
-
-    searchInput?.addEventListener('input', e => {
-        clearTimeout(timer);
-        timer = setTimeout(() => cargarProductosDesdeAPI(e.target.value.trim()), 300);
-    });
-
-    const filtrar = () => {
-        const cat = categorySelect?.value || 'todas';
-        const maxPrice = priceRange ? parseFloat(priceRange.value) : Infinity;
-        const priceVal = document.getElementById('price-val');
-        if (priceVal && priceRange) priceVal.textContent = maxPrice;
-
-        renderProductos(productosLista.filter(p => (cat === 'todas' || p.categoria === cat) && (isNaN(maxPrice) || p.precio <= maxPrice)));
-    };
-
-    categorySelect?.addEventListener('change', filtrar);
-    priceRange?.addEventListener('input', filtrar);
-}
-
 // 4. MODALES
 function abrirModalDetalle(id) {
     const prod = productosLista.find(p => p.id === id);

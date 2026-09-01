@@ -1,11 +1,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
 body { display: flex; min-height: 100vh; background: #f8fafc; color: #1e293b; }
 
-/* Navegación Lateral */
-aside { width: 200px; background: #0f172a; color: #fff; padding: 1.5rem 1rem; }
-aside h2 { font-size: 1.1rem; margin-bottom: 1.5rem; }
-aside nav a { display: block; color: #94a3b8; text-decoration: none; padding: 0.5rem 0; }
-
 /* Contenido Principal */
 main { flex: 1; padding: 2rem; }
 h1, h2 { margin-bottom: 1rem; }
