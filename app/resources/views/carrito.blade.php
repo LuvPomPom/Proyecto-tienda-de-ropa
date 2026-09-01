@@ -8,23 +8,27 @@
 </head>
 <body>
 
+
     <header class="navbar">
         <a href="{{ url('/') }}" class="logo"><strong>VOGA STORE</strong></a>
         <a href="{{ url('/') }}">← VOLVER A LA TIENDA</a>
     </header>
 
+
     <main class="products-section">
         <h2>Tu Carrito</h2>
-        
+       
         <div id="carrito-contenedor">
             <p>Cargando productos...</p>
         </div>
 
+
         <div id="carrito-resumen" style="margin-top: 20px; text-align: right;">
             <h3>Total: <span id="carrito-total">$ 0</span></h3>
-            <button class="btn-buy" onclick="checkout()" style="margin-top: 10px;">FINALIZAR COMPRA</button>
+           <a href="{{ url('/envios') }}"> <button class="btn-buy"style="margin-top: 10px;">FINALIZAR COMPRA</button> </a>
         </div>
     </main>
+
 
     <script src="{{ asset('js/api.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>

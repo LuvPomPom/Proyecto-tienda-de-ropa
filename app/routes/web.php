@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EnviosController; // agregué esto att:Mimi
 
 //Login y registro (lo que pensamos hoy mili lunes 31 de agosto)
 
@@ -47,3 +48,7 @@ Route::get('/carrito', function () {
 Route::get('/admin', function () {
     return view('admin.admin'); // resources/views/admin/admin.blade.php
 })->name('admin.dashboard');
+
+// Envios!!
+Route::get('/envios', [EnviosController::class, 'create'])->name('envios');
+Route::post('/envios', [EnviosController::class, 'store'])->name('envios.store');
