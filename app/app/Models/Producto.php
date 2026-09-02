@@ -9,13 +9,14 @@ class Producto extends Model
 {
     use HasFactory;
 
-    // Nombre de la tabla en Supabase
+    // Nombre tabla
     protected $table = 'productos';
+    public $timestamps = false;
 
-    // Clave primaria de la tabla
+    // id
     protected $primaryKey = 'id_producto';
 
-    // Campos permitidos para inserción masiva
+    // Columnas
     protected $fillable = [
         'nombre',
         'precio',
