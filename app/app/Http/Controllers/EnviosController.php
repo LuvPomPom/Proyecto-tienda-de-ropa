@@ -24,7 +24,7 @@ class EnviosController extends Controller
             $validated = $request->validate([
                 'nombre'   => 'required|string|max:100',
                 'apellido' => 'required|string|max:100',
-                'cedula'   => 'required|digits_between:7,8',
+                'cedula'   => 'required|string|max:8',
                 'fec_nac'  => 'required|date',
                 'telf'     => 'required|string|max:25',
                 'direc'    => 'required|string|max:255',
