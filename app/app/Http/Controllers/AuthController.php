@@ -2,56 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // 1. Iniciar Sesión (Admin y Clientes)
+    // Iniciar sesión
     public function login(Request $request)
     {
         $credenciales = $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        // Valida email y compara la contraseña encriptada
-        if (Auth::attempt($credenciales)) {
+    
+        $usuario = Usuario::where('email', $request->email)
+                          ->where('pass', $request->password)
+                          ->first();
+
+        if ($usuario) {
+            // Logueamos al usuario directamente en la sesión
+            Auth::login($usuario);
             $request->session()->regenerate();
 
-            // Redirige al panel de admin o a la tienda según su rol
-            if (Auth::user()->es_admin) {
-                return redirect()->route('admin.dashboard'); 
+            // Redirección por Rol (1 = Admin)
+            if ($usuario->rol_id == 1) {
+                return redirect()->route('admin.dashboard');
             }
 
-            return redirect()->route('catalogo');
+            return redirect()->route('home');
         }
 
-        return back()->withErrors(['email' => 'Credenciales incorrectas']);
+        return back()->withErrors([
+            'email' => 'El correo o la contraseña son incorrectos.'
+        ])->withInput();
     }
 
-    // 2. Registrar Usuario Común
+    // Registrar usuario
     public function register(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
+            'nombre' => 'required|string|max:255',
+            'email' => 'required|email|unique:usuarios,email',
             'password' => 'required|min:6'
         ]);
 
-        // Se crea como cliente común (es_admin = false por defecto)
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+        $usuario = Usuario::create([
+            'nombre' => $request->nombre,
+            'email' => $request->email,
+            'pass' => $request->password,
+
+            // Rol de cliente
+            'rol_id' => 2,
         ]);
 
-        Auth::login($user); // Inicia sesión automáticamente tras registrarse
+    // Iniciar sesión automáticamente
+        Auth::login($usuario);
 
-        return redirect()->route('catalogo');
+        $request->session()->regenerate();
+
+        return redirect('/');
     }
+
 
     // 3. Cerrar Sesión
     public function logout(Request $request)

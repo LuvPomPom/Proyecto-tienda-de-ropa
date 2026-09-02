@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Usuario extends Authenticatable
 {
+
     protected $table = 'usuarios';
     public $timestamps = false;
-
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -17,17 +18,8 @@ class Usuario extends Authenticatable
         'rol_id'
     ];
 
-    protected $hidden = [
-        'pass',
-    ];
-
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'rol_id', 'id');
-    }
-
-    public function getAuthPassword()
-    {
-        return $this->pass;
     }
 }

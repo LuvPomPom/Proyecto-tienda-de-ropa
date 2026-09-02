@@ -25,7 +25,24 @@
                 <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
             <div class="user-actions">
-                <a href="/login" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
+                @auth
+                    {{-- Si inició sesión: Mostramos su nombre, enlace de admin si aplica y botón de logout --}}
+                    @if(Auth::user()->rol_id == 1)
+                        <a href="{{ route('admin.dashboard') }}" title="Panel Admin"><i class="fa-solid fa-user-gear"></i></a>
+                    @endif
+
+                    <span style="font-size: 0.9rem; font-weight: bold;">{{ Auth::user()->nombre }}</span>
+
+                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        @csrf
+                        <button type="submit" title="Cerrar Sesión" style="background: none; border: none; cursor: pointer; color: inherit;">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </form>
+                @else
+                    {{-- Si es visitante: Mostramos el icono para ir al Login --}}
+                    <a href="{{ route('login') }}" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
+                @endauth
                 <div class="cart-trigger" id="open-cart" title="Carrito">
                    <a href="{{ url('/carrito') }}"> <i class="fa-solid fa-bag-shopping"></i>
                      </a>

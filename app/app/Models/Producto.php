@@ -10,7 +10,7 @@ class Producto extends Model
     use HasFactory;
 
     // Nombre de la tabla en Supabase
-    protected $table = 'productos'; 
+    protected $table = 'productos';
 
     // Clave primaria de la tabla
     protected $primaryKey = 'id_producto';

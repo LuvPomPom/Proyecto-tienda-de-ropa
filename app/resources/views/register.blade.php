@@ -8,7 +8,7 @@
     <h2>Crear Cuenta</h2>
     <form action="{{ route('register.post') }}" method="POST">
         @csrf
-        <input type="text" name="name" placeholder="Nombre" required><br><br>
+        <input type="text" name="nombre" placeholder="Nombre" required><br><br>
         <input type="email" name="email" placeholder="Correo" required><br><br>
         <input type="password" name="password" placeholder="Contraseña" required><br><br>
         <button type="submit">Registrarse</button>
