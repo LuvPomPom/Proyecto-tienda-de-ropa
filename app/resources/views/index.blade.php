@@ -26,7 +26,7 @@
             </div>
             <div class="user-actions">
                 @auth
-                    {{-- Si inició sesión: Mostramos su nombre, enlace de admin si aplica y botón de logout --}}
+            
                     @if(Auth::user()->rol_id == 1)
                         <a href="{{ route('admin.dashboard') }}" title="Panel Admin"><i class="fa-solid fa-user-gear"></i></a>
                     @endif
@@ -40,7 +40,7 @@
                         </button>
                     </form>
                 @else
-                    {{-- Si es visitante: Mostramos el icono para ir al Login --}}
+                    
                     <a href="{{ route('login') }}" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
                 @endauth
                 <div class="cart-trigger" id="open-cart" title="Carrito">
@@ -76,13 +76,6 @@
             @endforelse
         </div>
     </section>
-
-    <div class="modal" id="product-modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-product-modal">&times;</span>
-            <div id="modal-detail-body"></div>
-        </div>
-    </div>
 
 
 

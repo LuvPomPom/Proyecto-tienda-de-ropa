@@ -7,28 +7,10 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
-    public function index(Request $request)
-    {
-        try {
-            $query = Producto::query();
-
-            if ($request->has('buscar') && !empty($request->buscar)) {
-                $buscar = mb_strtolower($request->buscar);
-                $query->where('nombre', 'ILIKE', "%{$buscar}%");
-            }
-
-            return response()->json($query->get(), 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Error en la base de datos',
-                'details' => $e->getMessage()
-            ], 500);
-        }
-    }
 
     public function store(Request $request)
     {
-        // 1. Quitamos 'marca_id' de las validaciones
+        
         $validated = $request->validate([
             'nombre'       => 'required|string|max:255',
             'precio'       => 'required|numeric|min:0',
@@ -37,7 +19,7 @@ class ProductoController extends Controller
             'stock'        => 'required|integer|min:0'
         ]);
 
-        // 2. Quitamos 'marca_id' al crear el registro
+    
         $producto = Producto::create([
             'nombre'       => $validated['nombre'],
             'precio'       => $validated['precio'],

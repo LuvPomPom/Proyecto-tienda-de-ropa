@@ -34,11 +34,6 @@ Route::get('/categoria/{nombre?}', [ProductoController::class, 'categoria'])->na
 // Ruta API que consume tu main.js / api.js
 Route::get('/api/productos', [ProductoController::class, 'index']);
 
-// Catálogo de Productos
-Route::get('/productos', function () {
-    return view('productos'); // resources/views/productos.blade.php
-});
-
 // Carrito de compras
 Route::get('/carrito', function () {
     return view('carrito'); // resources/views/carrito.blade.php
