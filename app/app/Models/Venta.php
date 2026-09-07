@@ -6,10 +6,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Cliente extends Model
+class Venta extends Model
 {
 
-    protected $table = 'clientes';
+    protected $table = 'ventas';
     protected $primaryKey = 'id';
 
     public $timestamps = false;

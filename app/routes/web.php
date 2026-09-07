@@ -31,6 +31,8 @@ Route::post('/productos', [ProductoController::class, 'store'])->name('productos
 Route::get('/', [ProductoController::class, 'categoria']);
 Route::get('/categoria/{nombre?}', [ProductoController::class, 'categoria'])->name('productos.categoria');
 
+Route::put('/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
+
 // Ruta API que consume tu main.js / api.js
 Route::get('/api/productos', [ProductoController::class, 'index']);
 

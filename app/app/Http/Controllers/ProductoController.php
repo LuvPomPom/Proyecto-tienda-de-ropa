@@ -1,16 +1,17 @@
 <?php
 
+
 namespace App\Http\Controllers;
+
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
+
 class ProductoController extends Controller
 {
-
     public function store(Request $request)
     {
-        
         $validated = $request->validate([
             'nombre'       => 'required|string|max:255',
             'precio'       => 'required|numeric|min:0',
@@ -19,7 +20,7 @@ class ProductoController extends Controller
             'stock'        => 'required|integer|min:0'
         ]);
 
-    
+
         $producto = Producto::create([
             'nombre'       => $validated['nombre'],
             'precio'       => $validated['precio'],
@@ -28,38 +29,65 @@ class ProductoController extends Controller
             'stock'        => $validated['stock']
         ]);
 
-        // Guardar imagen localmente si existe
+
         if ($request->hasFile('imagen')) {
             $file = $request->file('imagen');
             $extension = $file->getClientOriginalExtension();
             $nombreArchivo = $producto->id_producto . '.' . $extension;
             $file->move(public_path('imgs/productos'), $nombreArchivo);
-            $rutaImagen = 'imgs/productos/' . $nombreArchivo;
-            
+           
             $producto->update([
-                'imagen' => $rutaImagen
+                'imagen' => 'imgs/productos/' . $nombreArchivo
             ]);
         }
 
-        return response()->json([
-            'success'  => true,
-            'message'  => 'Producto e imagen guardados con éxito',
-            'producto' => $producto
-        ], 201);
+
+        return redirect()->back()->with('success', 'Producto creado con éxito');
     }
+
+
+    // --- MÉTODO PARA ACTUALIZAR PRECIO Y DATOS DEL PRODUCTO ---
+    public function update(Request $request, $id)
+    {
+        $producto = Producto::findOrFail($id);
+
+
+        $validated = $request->validate([
+            'nombre'       => 'required|string|max:255',
+            'precio'       => 'required|numeric|min:0',
+            'stock'        => 'required|integer|min:0',
+            'categoria_id' => 'required|integer',
+            'imagen'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+
+        // Actualizar datos básicos en la base de datos
+        $producto->update([
+            'nombre'       => $validated['nombre'],
+            'precio'       => $validated['precio'],
+            'stock'        => $validated['stock'],
+            'categoria_id' => $validated['categoria_id'],
+        ]);
+
+
+        return redirect()->back()->with('success', 'Producto actualizado con éxito');
+    }
+
 
     public function categoria($nombre = 'todas')
     {
         $query = Producto::query();
 
-        // Mapeo simple de categorías para calzado
+
         $categoriasMap = [
             'deportivos' => 1,
             'urbanos'    => 2,
             'formales'   => 3,
         ];
 
+
         $nombreLimpio = strtolower($nombre);
+
 
         if ($nombreLimpio !== 'todas') {
             if (isset($categoriasMap[$nombreLimpio])) {
@@ -69,11 +97,13 @@ class ProductoController extends Controller
             }
         }
 
+
         try {
             $productos = $query->get();
         } catch (\Exception $e) {
-            $productos = collect(); 
+            $productos = collect();
         }
+
 
         return view('index', [
             'productos'       => $productos,
