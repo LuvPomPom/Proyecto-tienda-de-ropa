@@ -1,58 +1,64 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
-
 use App\Models\Cliente;
+use App\Models\Producto;
 use Illuminate\Http\Request;
-
 
 class EnviosController extends Controller
 {
-    // 1. Muestra la pantalla del formulario
     public function create()
     {
+        $carrito = session()->get('carrito', []);
+
+        if (empty($carrito)) {
+            return redirect()->route('index')->with('error', 'El carrito está vacío.');
+        }
+
         return view('envios');
     }
 
-
-    // 2. Recibe y procesa los datos del formulario
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'nombre'   => 'required|string|max:100',
-                'apellido' => 'required|string|max:100',
-                'cedula'   => 'required|string|max:8',
-                'fec_nac'  => 'required|date',
-                'telf'     => 'required|string|max:25',
-                'direc'    => 'required|string|max:255',
-            ]);
+        $carrito = session()->get('carrito', []);
 
-
-            $cliente = Cliente::create([
-                'nombre'   => $validated['nombre'],
-                'apellido' => $validated['apellido'],
-                'cedula'   => $validated['cedula'],
-                'fec_nac'  => $validated['fec_nac'],
-                'telf'     => $validated['telf'],
-                'direc'    => $validated['direc'],
-            ]);
-
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Cliente guardado con éxito',
-                'cliente' => $cliente
-            ], 201);
-
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'error'   => 'Error al procesar la solicitud',
-                'details' => $e->getMessage()
-            ], 500);
+        if (empty($carrito)) {
+            return redirect()->route('index')->with('error', 'El carrito está vacío.');
         }
+
+        $validated = $request->validate([
+            'nombre'   => 'required|string|max:100',
+            'apellido' => 'required|string|max:100',
+            'cedula'   => 'required|string|max:8',
+            'fec_nac'  => 'required|date',
+            'telf'     => 'required|string|max:25',
+            'direc'    => 'required|string|max:255',
+        ]);
+
+        // 1. Guardar datos del cliente
+        Cliente::create([
+            'nombre'   => $validated['nombre'],
+            'apellido' => $validated['apellido'],
+            'cedula'   => $validated['cedula'],
+            'fec_nac'  => $validated['fec_nac'],
+            'telf'     => $validated['telf'],
+            'direc'    => $validated['direc'],
+        ]);
+
+        // 2. Descontar stock figurativo de cada producto en el carrito
+        foreach ($carrito as $id => $item) {
+            $producto = Producto::find($id);
+            if ($producto) {
+                $producto->stock = max(0, $producto->stock - $item['cantidad']);
+                $producto->save();
+            }
+        }
+
+        // 3. Vaciar el carrito de la sesión
+        session()->forget('carrito');
+
+        // 4. Redirigir a la raíz (/) con mensaje de agradecimiento
+        return redirect()->route('index')->with('success', '¡Gracias por su compra! El envío ha sido registrado con éxito.');
     }
 }

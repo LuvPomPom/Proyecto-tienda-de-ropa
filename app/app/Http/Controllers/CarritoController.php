@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Producto; // O el modelo que usen para productos
+use App\Models\Producto;
 
 class CarritoController extends Controller
 {
-    // Mostrar la vista del carrito con los totales
     public function index()
     {
         $carrito = session()->get('carrito', []);
@@ -20,17 +19,23 @@ class CarritoController extends Controller
         return view('carrito', compact('carrito', 'total'));
     }
 
-    // Agregar producto al carrito
     public function agregar(Request $request, $id)
     {
+        // Eloquent usará 'id_producto' automáticamente gracias al $primaryKey de tu modelo
         $producto = Producto::findOrFail($id);
         $carrito = session()->get('carrito', []);
+
+        $cantidadDeseada = isset($carrito[$id]) ? $carrito[$id]['cantidad'] + 1 : 1;
+
+        if ($cantidadDeseada > $producto->stock) {
+            return redirect()->back()->with('error', 'No hay suficiente stock disponible.');
+        }
 
         if (isset($carrito[$id])) {
             $carrito[$id]['cantidad']++;
         } else {
             $carrito[$id] = [
-                "id" => $producto->id,
+                "id" => $producto->id_producto, // CORREGIDO: Usar id_producto
                 "nombre" => $producto->nombre,
                 "cantidad" => 1,
                 "precio" => $producto->precio,
@@ -39,18 +44,21 @@ class CarritoController extends Controller
         }
 
         session()->put('carrito', $carrito);
-        return redirect()->back()->with('success', 'Producto agregado');
+        return redirect()->back()->with('success', 'Producto agregado al carrito.');
     }
 
-    // Sumar o restar cantidad
     public function cambiarCantidad(Request $request, $id)
     {
+        $producto = Producto::find($id);
         $carrito = session()->get('carrito', []);
 
         if (isset($carrito[$id])) {
-            $operacion = $request->input('operacion'); // 'sumar' o 'restar'
+            $operacion = $request->input('operacion');
 
             if ($operacion === 'sumar') {
+                if ($producto && ($carrito[$id]['cantidad'] + 1) > $producto->stock) {
+                    return redirect()->back()->with('error', 'Límite de stock alcanzado.');
+                }
                 $carrito[$id]['cantidad']++;
             } elseif ($operacion === 'restar') {
                 $carrito[$id]['cantidad']--;

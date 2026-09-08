@@ -26,7 +26,6 @@
             </div>
             <div class="user-actions">
                 @auth
-            
                     @if(Auth::user()->rol_id == 1)
                         <a href="{{ route('admin.dashboard') }}" title="Panel Admin"><i class="fa-solid fa-user-gear"></i></a>
                     @endif
@@ -40,17 +39,27 @@
                         </button>
                     </form>
                 @else
-                    
                     <a href="{{ route('login') }}" title="Mi Cuenta"><i class="fa-regular fa-user"></i></a>
                 @endauth
                 <div class="cart-trigger" id="open-cart" title="Carrito">
-                   <a href="{{ url('/carrito') }}"> <i class="fa-solid fa-bag-shopping"></i>
-                     </a>
+                   <a href="{{ url('/carrito') }}"> <i class="fa-solid fa-bag-shopping"></i></a>
                 </div>
             </div>
         </div>
     </header>
 
+    {{-- Mensajes de Confirmación / Error --}}
+    @if(session('success'))
+        <div style="background-color: #d4edda; color: #155724; padding: 15px; text-align: center; font-weight: bold; margin: 10px auto; max-width: 1200px; border-radius: 5px;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div style="background-color: #f8d7da; color: #721c24; padding: 15px; text-align: center; font-weight: bold; margin: 10px auto; max-width: 1200px; border-radius: 5px;">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <section class="products-section" id="catalogo">
         <h3 class="section-title">Catálogo de Calzado</h3>
@@ -66,7 +75,12 @@
                         <div class="price-container">
                             <span class="price">${{ number_format($producto->precio, 0, ',', '.') }}</span>
                         </div>
-                        <button class="btn-buy">AGREGAR AL CARRITO</button>
+                        
+                        {{-- Formulario para Agregar al Carrito --}}
+                        <form action="{{ route('carrito.agregar', $producto->id_producto) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-buy">AGREGAR AL CARRITO</button>
+                        </form>
                     </div>
                 </div>
             @empty
@@ -76,8 +90,6 @@
             @endforelse
         </div>
     </section>
-
-
 
     <script src="{{ asset('js/api.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
