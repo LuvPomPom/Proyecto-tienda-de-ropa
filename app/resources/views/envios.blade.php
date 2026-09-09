@@ -10,6 +10,17 @@
     <main>
         <h1>Envios</h1>
 
+        <!-- Muestra errores de validación si faltan datos -->
+        @if ($errors->any())
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         @if(session('error'))
             <p style="color: red;">{{ session('error') }}</p>
         @endif
@@ -18,22 +29,23 @@
             @csrf
 
             <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" required> <br>
+            <input type="text" id="nombre" name="nombre" value="{{ old('nombre') }}" required> <br>
 
             <label for="apellido">Apellido</label>
-            <input type="text" id="apellido" name="apellido" required> <br>
+            <input type="text" id="apellido" name="apellido" value="{{ old('apellido') }}" required> <br>
 
-            <label for="cedula">Cédula de identidad</label>
-            <input type="text" id="cedula" name="cedula" required> <br>
+            <!-- Campo Requerido por la tabla clientes en Supabase -->
+            <label for="email">Correo electrónico</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" required> <br>
 
             <label for="fec_nac">Fecha de nacimiento</label>
-            <input type="date" id="fec_nac" name="fec_nac" required> <br>
+            <input type="date" id="fec_nac" name="fec_nac" value="{{ old('fec_nac') }}" required> <br>
 
             <label for="telf">Teléfono</label>
-            <input type="text" id="telf" name="telf" required> <br>
+            <input type="text" id="telf" name="telf" value="{{ old('telf') }}" required> <br>
 
             <label for="direc">Dirección</label>
-            <input type="text" id="direc" name="direc" required> <br>
+            <input type="text" id="direc" name="direc" value="{{ old('direc') }}" required> <br>
 
             <button type="submit">Confirmar envío</button>
         </form>

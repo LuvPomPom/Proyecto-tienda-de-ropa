@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 
 class Cliente extends Model
 {
+    use HasFactory;
 
     protected $table = 'clientes';
-    protected $primaryKey = 'id';
-
     public $timestamps = false;
+
     protected $fillable = [
-        'nombre',
+        'nombre', // Cambiado a minúscula
         'apellido',
-        'cedula',
-        'fec_nac',
+        'email',
         'telf',
-        'direc'
+        'direc',
+        'fec_nac',
     ];
 }

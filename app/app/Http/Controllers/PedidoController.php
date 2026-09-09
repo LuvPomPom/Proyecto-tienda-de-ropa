@@ -6,22 +6,23 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Producto;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PedidoController extends Controller
 {
     public function procesarCompra(Request $request)
     {
-        $carrito = session()->get('carrito', []);
+        $carritoSesion = session()->get('carrito', []);
 
-        if (empty($carrito)) {
+        if (empty($carritoSesion)) {
             return redirect()->route('index')->with('error', 'El carrito está vacío.');
         }
 
-        // 1. Validar los datos de entrada
+        // Validación estricta con los campos mapeados
         $validated = $request->validate([
             'nombre'   => 'required|string|max:100',
             'apellido' => 'required|string|max:100',
-            'cedula'   => 'required|string|max:8',
+            'email'    => 'required|email|max:150',
             'fec_nac'  => 'required|date',
             'telf'     => 'required|string|max:25',
             'direc'    => 'required|string|max:255',
@@ -30,42 +31,66 @@ class PedidoController extends Controller
         DB::beginTransaction();
 
         try {
-            // 2. Registrar el cliente asignando 'cedula' a la columna 'ci' de Supabase
-            Cliente::create([
+            // 1. Insertar el cliente en Supabase
+            $cliente = Cliente::create([
                 'nombre'   => $validated['nombre'],
                 'apellido' => $validated['apellido'],
-                'ci'       => $validated['cedula'], // Mapeo a la columna 'ci'
+                'email'    => $validated['email'],
                 'fec_nac'  => $validated['fec_nac'],
                 'telf'     => $validated['telf'],
                 'direc'    => $validated['direc'],
             ]);
 
-            // 3. Verificar y descontar stock
-            foreach ($carrito as $id => $item) {
-                $producto = Producto::where('id_producto', $id)->lockForUpdate()->first();
+            // 2. Insertar cabecera de carrito
+            $carritoId = DB::table('carrito')->insertGetId([
+                'usuario_id' => Auth::id() ?? 1,
+            ]);
+
+            $totalAcumulado = 0;
+
+            // 3. Insertar items y actualizar stock
+            foreach ($carritoSesion as $idProducto => $item) {
+                $producto = Producto::where('id_producto', $idProducto)->lockForUpdate()->first();
 
                 if (!$producto || $producto->stock < $item['cantidad']) {
                     DB::rollBack();
                     return redirect()->route('carrito.index')->with(
                         'error', 
-                        'No hay suficiente stock para el producto: ' . ($producto->nombre ?? 'Seleccionado')
+                        'Stock insuficiente para el producto seleccionado.'
                     );
                 }
 
+                DB::table('detalle_carrito')->insert([
+                    'carrito_id'  => $carritoId,
+                    'producto_id' => $idProducto,
+                    'cantidad'    => $item['cantidad'],
+                ]);
+
                 $producto->stock -= $item['cantidad'];
                 $producto->save();
+
+                $totalAcumulado += $item['precio'] * $item['cantidad'];
             }
+
+            // 4. Insertar venta asociada al cliente y al carrito (cliente_id en minúscula)
+            DB::table('ventas')->insert([
+                'cliente_id'  => $cliente->id,
+                'fecha_venta' => now(),
+                'total'       => $totalAcumulado,
+                'forma_pago'  => $request->input('forma_pago', 1),
+                'carrito'     => $carritoId,
+            ]);
 
             DB::commit();
 
-            // 4. Vaciar carrito
+            // 5. Vaciar sesión
             session()->forget('carrito');
 
-            return redirect()->route('index')->with('success', '¡Gracias por su compra! El envío ha sido registrado y el stock actualizado.');
+            return redirect()->route('index')->with('success', '¡Compra procesada con éxito!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Ocurrió un error al procesar el pedido: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Error en Supabase: ' . $e->getMessage());
         }
     }
 }
