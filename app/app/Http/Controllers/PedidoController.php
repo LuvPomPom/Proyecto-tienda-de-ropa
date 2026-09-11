@@ -41,14 +41,14 @@ class PedidoController extends Controller
                 'direc'    => $validated['direc'],
             ]);
 
-            // 2. Insertar cabecera de carrito
+            // 2. Insert cabecera de carrito
             $carritoId = DB::table('carrito')->insertGetId([
                 'usuario_id' => Auth::id() ?? 1,
             ]);
 
             $totalAcumulado = 0;
 
-            // 3. Insertar items y actualizar stock
+            // 3. Insertar items, actualizar stock
             foreach ($carritoSesion as $idProducto => $item) {
                 $producto = Producto::where('id_producto', $idProducto)->lockForUpdate()->first();
 
@@ -72,7 +72,7 @@ class PedidoController extends Controller
                 $totalAcumulado += $item['precio'] * $item['cantidad'];
             }
 
-            // 4. Insertar venta asociada al cliente y al carrito (cliente_id en minúscula)
+            // 4. Insertar venta asociada al cliente y al carrito
             DB::table('ventas')->insert([
                 'cliente_id'  => $cliente->id,
                 'fecha_venta' => now(),
@@ -83,7 +83,6 @@ class PedidoController extends Controller
 
             DB::commit();
 
-            // 5. Vaciar sesión
             session()->forget('carrito');
 
             return redirect()->route('index')->with('success', '¡Compra procesada con éxito!');

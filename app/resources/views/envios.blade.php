@@ -25,7 +25,7 @@
             <p style="color: red;">{{ session('error') }}</p>
         @endif
 
-        <form id="form-envio" action="{{ route('pedido.procesar') }}" method="POST">
+        <form id="form-envio" action="{{ route('pedido.procesar') }}" method="POST">    <!-- method to cllr -->
             @csrf
 
             <label for="nombre">Nombre</label>

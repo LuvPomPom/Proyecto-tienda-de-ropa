@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Crear Cuenta</h2>
-    <form action="{{ route('register.post') }}" method="POST">
+    <form action="{{ route('register.post') }}" method="POST">    <!-- field-validation -->
         @csrf
         <input type="text" name="nombre" placeholder="Nombre" required><br><br>
         <input type="email" name="email" placeholder="Correo" required><br><br>

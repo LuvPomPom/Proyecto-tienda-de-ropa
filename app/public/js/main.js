@@ -1,24 +1,24 @@
 let productosLista = [], carrito = JSON.parse(localStorage.getItem('cart_items')) || [];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {  //event listener security
     cargarProductosDesdeAPI();
     actualizarCarritoUI();
     initFiltros();
     initCartEvents();
 });
 
-async function cargarProductosDesdeAPI(busqueda = '') {
+async function cargarProductosDesdeAPI(busqueda = '') {    //no screen freeze
     try {
-        const res = await fetch(`/api/productos${busqueda ? `?buscar=${encodeURIComponent(busqueda)}` : ''}`);
+        const res = await fetch(`/api/productos${busqueda ? `?buscar=${encodeURIComponent(busqueda)}` : ''}`);   //encode security
         if (!res.ok) throw new Error();
-        const datos = await res.json();
+        const datos = await res.json();    // JSON-JS
 
-        productosLista = datos.map(p => ({
+        productosLista = datos.map(p => ({     //itera..
             id: p.id_producto ?? p.id,
             nombre: p.nombre || 'Sin nombre',
-            precio: parseFloat(p.precio) || 0,
-            imagen: p.imagen ? (p.imagen.startsWith('http') || p.imagen.startsWith('/') ? p.imagen : `/${p.imagen}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
-            categoria: p.categoria_id ? p.categoria_id.toString() : 'todas',
+            precio: parseFloat(p.precio) || 0, //text to float
+            imagen: p.imagen ? (p.imagen.startsWith('http') || p.imagen.startsWith('/') ? p.imagen : `/${p.imagen}`) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400', //img route
+            categoria: p.categoria_id ? p.categoria_id.toString() : 'todas',    //id to text
             descripcion: p.nombre || ''
         }));
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Iniciar sesión
+    // log in
     public function login(Request $request)
     {
         $credenciales = $request->validate([
@@ -23,7 +23,7 @@ class AuthController extends Controller
                           ->first();
 
         if ($usuario) {
-            // Logueamos al usuario directamente en la sesión
+            // Logueo de usuario directamente en la sesión
             Auth::login($usuario);
             $request->session()->regenerate();
 
@@ -40,7 +40,7 @@ class AuthController extends Controller
         ])->withInput();
     }
 
-    // Registrar usuario
+    // user register
     public function register(Request $request)
     {
         $request->validate([
@@ -54,11 +54,11 @@ class AuthController extends Controller
             'email' => $request->email,
             'pass' => $request->password,
 
-            // Rol de cliente
+            // Rol cliente
             'rol_id' => 2,
         ]);
 
-    // Iniciar sesión automáticamente
+    // automatically log in
         Auth::login($usuario);
 
         $request->session()->regenerate();
@@ -67,7 +67,7 @@ class AuthController extends Controller
     }
 
 
-    // 3. Cerrar Sesión
+    // log out
     public function logout(Request $request)
     {
         Auth::logout(); //

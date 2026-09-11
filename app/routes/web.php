@@ -4,17 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\CarritoController;
-use App\Http\Controllers\EnviosController; // agregué esto att:Mimi
+use App\Http\Controllers\EnviosController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PedidoController;
 
 Route::middleware(['auth'])->group(function () {
-    // ... tus otras rutas ...
+    // PedidoController
     Route::post('/finalizar-compra', [PedidoController::class, 'procesarCompra'])->name('pedido.procesar');
 });
-
-
-
 
 // Vistas para mostrar los formularios (GET)
 Route::get('/login', function () {
@@ -43,20 +40,20 @@ Route::put('/productos/{id}', [ProductoController::class, 'update'])->name('prod
 // Ruta API que consume tu main.js / api.js
 Route::get('/api/productos', [ProductoController::class, 'index']);
 
-// Dashboard Admin
+// Admin Panel
 Route::get('/admin', function () {
     return view('admin.admin'); // resources/views/admin/admin.blade.php
 })->name('admin.dashboard');
 
-// --- RUTAS PROTEGIDAS (REQUIEREN INICIAR SESIÓN) ---
+// RUTAS CON INICIO DE SESIÓN REQUERIDO
 Route::middleware(['auth'])->group(function () {
     
-    // Carrito de compras
+    // Carrito
     Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
     Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregar'])->name('carrito.agregar');
     Route::post('/carrito/cantidad/{id}', [CarritoController::class, 'cambiarCantidad'])->name('carrito.cantidad');
 
-    // Envios!!
+    // Envios
     Route::get('/envios', [EnviosController::class, 'create'])->name('envios');
     Route::post('/envios', [EnviosController::class, 'store'])->name('envios.store');
 });

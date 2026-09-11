@@ -11,7 +11,7 @@
         <p style="color:red;">{{ $errors->first() }}</p>
     @endif
 
-    <form action="{{ route('login.post') }}" method="POST">
+    <form action="{{ route('login.post') }}" method="POST">       <!-- maped URL -->
         @csrf
         <input type="email" name="email" placeholder="Correo" required><br><br>
         <input type="password" name="password" placeholder="Contraseña" required><br><br>

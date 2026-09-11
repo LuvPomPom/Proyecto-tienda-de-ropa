@@ -55,10 +55,8 @@ class EnviosController extends Controller
             }
         }
 
-        // 3. Vaciar el carrito de la sesión
         session()->forget('carrito');
 
-        // 4. Redirigir a la raíz (/) con mensaje de agradecimiento
         return redirect()->route('index')->with('success', '¡Gracias por su compra! El envío ha sido registrado con éxito.');
     }
 }
