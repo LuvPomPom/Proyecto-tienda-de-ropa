@@ -20,12 +20,13 @@ class PedidoController extends Controller
 
         // Validación estricta con los campos mapeados
         $validated = $request->validate([
-            'nombre'   => 'required|string|max:100',
-            'apellido' => 'required|string|max:100',
-            'email'    => 'required|email|max:150',
-            'fec_nac'  => 'required|date',
-            'telf'     => 'required|string|max:25',
-            'direc'    => 'required|string|max:255',
+            'nombre'         => 'required|string|max:100',
+            'apellido'       => 'required|string|max:100',
+            'email'          => 'required|email|max:150',
+            'fec_nac'        => 'required|date',
+            'telf'           => 'required|string|max:25',
+            'direc'          => 'required|string|max:255',
+            'metodo_pago_id' => 'required|integer|in:1,2,3,4,5', 
         ]);
 
         DB::beginTransaction();
@@ -72,13 +73,13 @@ class PedidoController extends Controller
                 $totalAcumulado += $item['precio'] * $item['cantidad'];
             }
 
-            // 4. Insertar venta asociada al cliente y al carrito
+            // 4. Insertar venta asociada al cliente
             DB::table('ventas')->insert([
-                'cliente_id'  => $cliente->id,
-                'fecha_venta' => now(),
-                'total'       => $totalAcumulado,
-                'forma_pago'  => $request->input('forma_pago', 1),
-                'carrito'     => $carritoId,
+                'cliente_id'     => $cliente->id,
+                'fecha_venta'    => now(),
+                'total'          => $totalAcumulado,
+                'forma_pago'     => $validated['metodo_pago_id'],
+                'carrito'        => $carritoId,
             ]);
 
             DB::commit();

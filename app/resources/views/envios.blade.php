@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOGA STORE</title>
+    <title>VOGA STORE - Envíos</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
     <main>
-        <h1>Envios</h1>
+        <h1>Envíos y Pago</h1>
 
         <!-- Muestra errores de validación si faltan datos -->
         @if ($errors->any())
@@ -25,7 +25,7 @@
             <p style="color: red;">{{ session('error') }}</p>
         @endif
 
-        <form id="form-envio" action="{{ route('pedido.procesar') }}" method="POST">    <!-- method to cllr -->
+        <form id="form-envio" action="{{ route('pedido.procesar') }}" method="POST">
             @csrf
 
             <label for="nombre">Nombre</label>
@@ -47,7 +47,18 @@
             <label for="direc">Dirección</label>
             <input type="text" id="direc" name="direc" value="{{ old('direc') }}" required> <br>
 
-            <button type="submit">Confirmar envío</button>
+            <!-- Campo Método de Pago vinculado a Supabase -->
+            <label for="metodo_pago">Método de pago</label>
+            <select id="metodo_pago" name="metodo_pago_id" required>
+                <option value="" disabled {{ old('metodo_pago_id') ? '' : 'selected' }}>Seleccione un método de pago</option>
+                <option value="1" {{ old('metodo_pago_id') == '1' ? 'selected' : '' }}>Tarjeta de Débito</option>
+                <option value="2" {{ old('metodo_pago_id') == '2' ? 'selected' : '' }}>Tarjeta de Crédito</option>
+                <option value="3" {{ old('metodo_pago_id') == '3' ? 'selected' : '' }}>Efectivo</option>
+                <option value="4" {{ old('metodo_pago_id') == '4' ? 'selected' : '' }}>PayPal</option>
+                <option value="5" {{ old('metodo_pago_id') == '5' ? 'selected' : '' }}>MercadoPago</option>
+            </select> <br><br>
+
+            <button type="submit">Confirmar envío y pago</button>
         </form>
     </main>
 </body>
