@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VOGA STORE - Envíos</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pago.css') }}">
 </head>
 <body>
     <main>
+
+<header class="navbar">
+    <a href="/" class="logo"><strong>VOGA STORE</strong></a>
+</header>
+
+<div class=panel-altura>
+<div class=panel>
         <h1>Envíos y Pago</h1>
 
         <!-- Muestra errores de validación si faltan datos -->
@@ -24,6 +31,7 @@
         @if(session('error'))
             <p style="color: red;">{{ session('error') }}</p>
         @endif
+
 
         <form id="form-envio" action="{{ route('pedido.procesar') }}" method="POST">
             @csrf
@@ -58,8 +66,11 @@
                 <option value="5" {{ old('metodo_pago_id') == '5' ? 'selected' : '' }}>MercadoPago</option>
             </select> <br><br>
 
-            <button type="submit">Confirmar envío y pago</button>
+            <button type="submit" class="btn">Confirmar envío y pago</button>
         </form>
+
+</div>
+</div> 
     </main>
 </body>
 </html>
